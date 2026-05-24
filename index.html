@@ -475,6 +475,7 @@
   .eco-tab-scroll::-webkit-scrollbar { display: none; }
   .eco-tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   @media (max-width: 1023px) {
+    /* Tabs: 3×2 grid */
     .eco-tab-scroll { overflow-x: visible; }
     .eco-tab-scroll > [role="tablist"] {
       display: grid !important;
@@ -501,6 +502,21 @@
       border-bottom-color: #D9B500 !important;
     }
     .eco-tab-icon { width: 20px !important; height: 20px !important; }
+
+    /* Panel: compact padding + logos above text in a compact row */
+    .eco-panel-stack { padding: 12px 14px 18px !important; }
+    .eco-panel.eco-content { gap: 14px !important; }
+    .eco-panel.eco-content > div:last-child { order: -1; }
+    .eco-logo-grid {
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 8px !important;
+    }
+    .eco-logo-card {
+      aspect-ratio: 3/2 !important;
+      padding: 10px !important;
+    }
+    .eco-logo { max-height: 36px !important; }
+    .eco-chip { padding: 5px 9px !important; font-size: 11px !important; }
   }
   /* About cards hover */
   .about-card { transition: background .25s ease, border-color .25s ease, box-shadow .25s ease; }
@@ -1642,8 +1658,25 @@
       next.disabled = cur === total - 1;
     }
 
-    prev.addEventListener('click', function(){ go(cur - 1); });
-    next.addEventListener('click', function(){ go(cur + 1); });
+    // Navigation: touchend (primary on iOS) + click (desktop fallback)
+    function navBtn(el, dir) {
+      var fired = false;
+      el.addEventListener('touchend', function(e) {
+        if (el.disabled) return;
+        e.preventDefault(); // prevent ghost click
+        fired = true;
+        go(cur + dir);
+        startAuto();
+        setTimeout(function(){ fired = false; }, 400);
+      }, { passive: false });
+      el.addEventListener('click', function() {
+        if (el.disabled || fired) return;
+        go(cur + dir);
+        startAuto();
+      });
+    }
+    navBtn(prev, -1);
+    navBtn(next, 1);
     dots.forEach(function(d, i){ d.addEventListener('click', function(){ go(i); }); });
 
     var startX = 0;
@@ -1675,8 +1708,7 @@
     };
     section.addEventListener('mouseenter', function(){ clearInterval(autoTimer); });
     section.addEventListener('mouseleave', startAuto);
-    prev.addEventListener('click', startAuto);
-    next.addEventListener('click', startAuto);
+    // prev/next startAuto already handled inside navBtn above
     dots.forEach(function(d){ d.addEventListener('click', startAuto); });
     track.addEventListener('touchend', startAuto);
     window.addEventListener('scroll', function() {
