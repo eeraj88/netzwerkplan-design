@@ -571,13 +571,13 @@
   #testi .t-track { display:flex !important; gap:28px; padding:72px 0 36px; transition:transform .55s cubic-bezier(.4,0,.2,1); }
   #testi .t-logo { max-height:46px; max-width:140px; width:auto; object-fit:contain; flex-shrink:0; }
   /* Slides — warm tint, blue border */
-  #testi .t-slide { flex-shrink:0; width:380px; background:#fff !important; border-radius:20px; border:2px solid rgba(55,102,197,.28); padding:44px 28px 28px; display:flex !important; flex-direction:column !important; transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .5s ease,border-color .3s ease,box-shadow .3s ease; opacity:.45; transform:scale(.92); cursor:pointer; position:relative; overflow:visible; }
+  #testi .t-slide { flex-shrink:0; width:380px; background:#fff !important; border-radius:20px; border:2px solid rgba(55,102,197,.28); padding:44px 28px 28px; display:flex !important; flex-direction:column !important; transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s ease; opacity:1; transform:scale(.92); cursor:pointer; position:relative; overflow:visible; }
   #testi .t-slide.active { opacity:1 !important; transform:scale(1) !important; cursor:default; border-color:rgba(55,102,197,.6) !important; box-shadow:0 4px 28px rgba(15,45,107,.12), inset 0 4px 0 #3766C5; }
-  #testi .t-slide.active:hover { border-color:rgba(55,102,197,.8) !important; box-shadow:inset 4px 4px 22px rgba(255,255,255,.7), inset 0 4px 0 #3766C5, 0 12px 40px rgba(15,45,107,.18) !important; transform:scale(1.03) !important; }
+  #testi .t-slide.active:hover { border-color:rgba(55,102,197,.8) !important; box-shadow:0 12px 48px rgba(15,45,107,.2), inset 0 4px 0 #3766C5 !important; transform:scale(1.05) !important; z-index:10; }
   /* Shine overlay � diagonal light sweep on hover */
-  #testi .t-slide::before { content:''; position:absolute; inset:0; border-radius:18px; background:linear-gradient(135deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.18) 35%, rgba(255,255,255,0) 60%); opacity:0; transition:opacity .4s ease; pointer-events:none; z-index:1; }
+  #testi .t-slide::before { content:''; position:absolute; inset:0; border-radius:18px; background:linear-gradient(135deg, rgba(255,255,255,.8) 0%, rgba(255,255,255,.4) 35%, rgba(255,255,255,0) 70%); opacity:0; transition:opacity .4s ease; pointer-events:none; z-index:2; }
   #testi .t-slide.active:hover::before { opacity:1; }
-  #testi .t-slide.adj { opacity:0; transform:scale(.95); pointer-events:none; }
+  #testi .t-slide.adj { opacity:1; transform:scale(.95); pointer-events:none; }
   /* Giant quote mark — floats above card */
   #testi .t-slide > svg { position:absolute; top:-52px; left:24px; width:100px; height:82px; opacity:0; transition:opacity .45s ease; }
   #testi .t-slide.active > svg { opacity:1; }
@@ -588,9 +588,7 @@
   #testi .t-name { font-weight:700; color:#0F2D6B !important; font-size:14px; line-height:1.35; }
   #testi .t-role { font-size:12.5px; color:#94a3b8 !important; margin-top:3px; }
   #testi .t-nav { display:flex !important; align-items:center; justify-content:center; gap:20px; margin-top:32px; position:relative; z-index:50; isolation:isolate; }
-  #testi .t-arrow { width:52px; height:52px; border-radius:50%; border:2px solid #18449C; background:#18449C; color:#fff; display:flex !important; align-items:center; justify-content:center; cursor:pointer; transition:background .2s ease,border-color .2s ease,transform .15s ease; flex-shrink:0; box-shadow:0 4px 16px rgba(15,45,107,.25); pointer-events:auto !important; touch-action:manipulation; -webkit-tap-highlight-color:rgba(0,0,0,.1); }
-  #testi .t-arrow:hover:not([disabled]) { background:#0F2D6B; border-color:#0F2D6B; transform:scale(1.08); }
-  #testi .t-arrow[disabled] { opacity:.25; cursor:default; pointer-events:none !important; }
+  #testi .t-arrow { display: none !important; }
   /* Contain GPU compositing layers so they don't bleed past overflow:hidden on iOS */
   #testi .t-overflow { isolation:isolate; }
   #testi .t-dots { display:flex; gap:8px; align-items:center; }
@@ -1660,89 +1658,100 @@
     var track = document.getElementById('tTrack');
     var slides = Array.prototype.slice.call(track.querySelectorAll('.t-slide'));
     var dots   = Array.prototype.slice.call(document.getElementById('tDots').querySelectorAll('.t-dot'));
-    var prev   = document.getElementById('tPrev');
-    var next   = document.getElementById('tNext');
     var total  = slides.length;
-    var cur    = 0;
     var cardW  = 0;
     var W      = 0;
+    var offsetX = 0;
+    var speed = 0.8; // pixels per frame
+    var isPaused = false;
+    var animationId = null;
 
     function updateDims() {
       cardW = slides[0].offsetWidth;
       W     = track.parentElement.offsetWidth;
     }
 
-    function go(idx) {
-      cur = Math.max(0, Math.min(total - 1, idx));
-      var tx = (W - cardW) / 2 - cur * (cardW + GAP);
-      track.style.transform = 'translateX(' + tx + 'px)';
-      slides.forEach(function(s, i) {
-        s.className = 't-slide' +
-          (i === cur     ? ' active' :
-           i === cur - 1 || i === cur + 1 ? ' adj' : '');
-      });
-      dots.forEach(function(d, i) {
-        d.className = 't-dot' + (i === cur ? ' active' : '');
-      });
-      prev.disabled = cur === 0;
-      next.disabled = cur === total - 1;
-    }
+    // Clone slides for infinite loop
+    var originalSlides = slides.slice();
+    slides.forEach(function(s){ track.appendChild(s.cloneNode(true)); });
+    slides.forEach(function(s){ track.appendChild(s.cloneNode(true)); });
+    slides = Array.prototype.slice.call(track.querySelectorAll('.t-slide'));
 
-    // Navigation: touchstart (primary on iOS) + click (desktop fallback)
-    function navBtn(el, dir) {
-      var fired = false;
-      function act(e) {
-        if (e) e.stopPropagation(); // prevent event bubbling
-        if (el.disabled || fired) return;
-        fired = true;
-        go(cur + dir);
-        startAuto();
-        setTimeout(function(){ fired = false; }, 400);
+    function animate() {
+      if (!isPaused) {
+        offsetX -= speed;
+        var totalWidth = (cardW + GAP) * originalSlides.length;
+
+        // Seamless loop: reset when scrolled past one full set
+        if (offsetX <= -totalWidth) {
+          offsetX += totalWidth;
+          track.style.transition = 'none';
+          track.style.transform = 'translateX(' + offsetX + 'px)';
+          setTimeout(function(){ track.style.transition = ''; }, 10);
+        }
+
+        track.style.transform = 'translateX(' + offsetX + 'px)';
+
+        // Update active state based on center position
+        var centerIndex = Math.round((W/2 - offsetX) / (cardW + GAP));
+        centerIndex = ((centerIndex % total) + total) % total;
+
+        slides.forEach(function(s, i) {
+          var origIndex = i % total;
+          s.className = 't-slide' + (origIndex === centerIndex ? ' active' : '');
+        });
+
+        dots.forEach(function(d, i) {
+          d.className = 't-dot' + (i === centerIndex ? ' active' : '');
+        });
       }
-      el.addEventListener('touchstart', act, { passive: true });
-      el.addEventListener('click', act);
+      animationId = requestAnimationFrame(animate);
     }
-    navBtn(prev, -1);
-    navBtn(next, 1);
-    dots.forEach(function(d, i){ d.addEventListener('click', function(){ go(i); }); });
 
-    var startX = 0;
-    section.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, {passive:true});
-    section.addEventListener('touchend',   function(e){
-      var diff = startX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 30) go(cur + (diff > 0 ? 1 : -1));
+    // Pause on card hover
+    slides.forEach(function(slide){
+      slide.addEventListener('mouseenter', function(){ isPaused = true; });
+      slide.addEventListener('mouseleave', function(){ isPaused = false; });
     });
 
-    window.addEventListener('resize', function(){ updateDims(); go(cur); });
+    // Click dot to jump to position
+    dots.forEach(function(d, i){
+      d.addEventListener('click', function(){
+        var targetX = -(i * (cardW + GAP)) + (W - cardW) / 2;
+        offsetX = targetX;
+      });
+    });
 
-    /* Double rAF: read dims once layout is ready, snap to position without animation */
+    // Touch swipe
+    var startX = 0;
+    section.addEventListener('touchstart', function(e){
+      startX = e.touches[0].clientX;
+      isPaused = true;
+    }, {passive:true});
+    section.addEventListener('touchend', function(e){
+      var diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 10) {
+        offsetX -= diff * 1.5;
+      }
+      setTimeout(function(){ isPaused = false; }, 1500);
+    });
+
+    var resizeTimer;
+    window.addEventListener('resize', function(){
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function(){
+        updateDims();
+        offsetX = 0;
+      }, 150);
+    });
+
+    // Init
     requestAnimationFrame(function(){
       requestAnimationFrame(function(){
         updateDims();
-        track.style.transition = 'none';
-        go(0);
-        requestAnimationFrame(function(){ track.style.transition = ''; });
+        animate();
       });
     });
-
-    /* Auto-advance — pause on hover and during page scroll */
-    var autoTimer;
-    var scrollEndTimer;
-    var startAuto = function() {
-      clearInterval(autoTimer);
-      autoTimer = setInterval(function(){ go(cur >= total - 1 ? 0 : cur + 1); }, 3000);
-    };
-    section.addEventListener('mouseenter', function(){ clearInterval(autoTimer); });
-    section.addEventListener('mouseleave', startAuto);
-    // prev/next startAuto already handled inside navBtn above
-    dots.forEach(function(d){ d.addEventListener('click', startAuto); });
-    track.addEventListener('touchend', startAuto);
-    window.addEventListener('scroll', function() {
-      clearInterval(autoTimer);
-      clearTimeout(scrollEndTimer);
-      scrollEndTimer = setTimeout(startAuto, 900);
-    }, { passive: true });
-    startAuto();
 
   })();
   </script>
