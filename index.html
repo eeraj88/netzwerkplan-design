@@ -1656,6 +1656,7 @@
   <script>
   (function(){
     var GAP = 28;
+    var section = document.getElementById('testi');
     var track = document.getElementById('tTrack');
     var slides = Array.prototype.slice.call(track.querySelectorAll('.t-slide'));
     var dots   = Array.prototype.slice.call(document.getElementById('tDots').querySelectorAll('.t-dot'));
@@ -1727,7 +1728,6 @@
     /* Auto-advance — pause on hover and during page scroll */
     var autoTimer;
     var scrollEndTimer;
-    var section = document.getElementById('testi');
     var startAuto = function() {
       clearInterval(autoTimer);
       autoTimer = setInterval(function(){ go(cur >= total - 1 ? 0 : cur + 1); }, 3000);
