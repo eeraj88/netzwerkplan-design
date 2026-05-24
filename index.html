@@ -271,10 +271,12 @@
   .modal.open { display: flex; align-items: center; justify-content: center; }
   .modal-backdrop {
     position: absolute; inset: 0;
-    background: rgba(15, 23, 42, .55);
-    backdrop-filter: blur(6px);
+    background: rgba(15, 23, 42, .65);
     opacity: 0;
     transition: opacity .25s ease;
+  }
+  @supports (backdrop-filter: blur(6px)) {
+    .modal-backdrop { backdrop-filter: blur(6px); background: rgba(15,23,42,.55); }
   }
   .modal.open .modal-backdrop { opacity: 1; }
   .modal-dialog {
@@ -456,13 +458,22 @@
     .hero-stat .text-\[12px\] { font-size: 11px !important; }
   }
 
-  /* ── Modal: iOS scroll fix ── */
+  /* ── Modal: iOS fixes ── */
   .modal-body { -webkit-overflow-scrolling: touch; }
+  /* touch-action on all modal triggers and nav buttons */
+  [data-open-modal], [data-close-modal], .t-arrow, .slideNav, .eco-tab, #mobBurger {
+    touch-action: manipulation;
+  }
   @media (max-width: 639px) {
     .modal-dialog { border-radius: 16px; }
     .modal-header { padding: 18px 18px 0; }
     .modal-body { padding: 18px; }
   }
+
+  /* ── Eco tabs: horizontal scroll on mobile ── */
+  .eco-tab-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .eco-tab-scroll::-webkit-scrollbar { display: none; }
+  .eco-tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   /* About cards hover */
   .about-card { transition: background .25s ease, border-color .25s ease, box-shadow .25s ease; }
   .about-card:hover {
@@ -1162,7 +1173,7 @@
       <div class="absolute -bottom-40 -left-20 w-[500px] h-[500px] rounded-full pointer-events-none" style="background: radial-gradient(closest-side, rgba(24,68,156,.6), transparent 70%);"></div>
 
       <!-- Tabs -->
-      <div class="relative border-b border-white/10 overflow-x-auto">
+      <div class="relative border-b border-white/10 overflow-x-auto eco-tab-scroll">
         <div role="tablist" class="flex gap-1 px-3 lg:px-6 min-w-max">
           <button class="eco-tab" data-tab="cde-bim" role="tab">
             <span class="eco-tab-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span>
@@ -1510,7 +1521,7 @@
     track.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, {passive:true});
     track.addEventListener('touchend',   function(e){
       var diff = startX - e.changedTouches[0].clientX;
-      if (Math.abs(diff) > 50) go(cur + (diff > 0 ? 1 : -1));
+      if (Math.abs(diff) > 30) go(cur + (diff > 0 ? 1 : -1));
     });
 
     window.addEventListener('resize', function(){ updateDims(); go(cur); });
@@ -1756,6 +1767,12 @@
 document.getElementById('mobBurger').addEventListener('click', () => {
   document.getElementById('mobMenu').classList.toggle('hidden');
 });
+// Close mobile menu when any link/button inside it is tapped
+document.getElementById('mobMenu').addEventListener('click', (e) => {
+  if (e.target.tagName === 'A' || e.target.closest('[data-open-modal]')) {
+    document.getElementById('mobMenu').classList.add('hidden');
+  }
+});
 
 /* ============ Reveal on scroll ============ */
 (() => {
@@ -1946,9 +1963,14 @@ document.getElementById('mobBurger').addEventListener('click', () => {
   }
 
   function tryPlay(v) {
-    if (v.readyState >= 2) { v.play().catch(() => {}); return; }
-    const handler = () => { v.removeEventListener('canplay', handler); v.play().catch(() => {}); };
-    v.addEventListener('canplay', handler);
+    const attempt = () => v.play().catch(() => {});
+    if (v.readyState >= 2) { attempt(); return; }
+    let done = false;
+    const fire = () => { if (done) return; done = true; attempt(); };
+    v.addEventListener('loadeddata', fire, { once: true });
+    v.addEventListener('canplay',    fire, { once: true });
+    // iOS fallback: if neither fires within 2s, try anyway
+    setTimeout(fire, 2000);
   }
 
   function go(n) {
@@ -2003,7 +2025,7 @@ document.getElementById('mobBurger').addEventListener('click', () => {
   track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; swiping = true; dx = 0; }, { passive: true });
   track.addEventListener('touchmove',  (e) => { if (swiping) dx = e.touches[0].clientX - startX; }, { passive: true });
   track.addEventListener('touchend',   () => {
-    if (Math.abs(dx) > 50) { if (dx < 0) go(idx + 1); else go(idx - 1); }
+    if (Math.abs(dx) > 30) { if (dx < 0) go(idx + 1); else go(idx - 1); }
     swiping = false; dx = 0;
   });
 
