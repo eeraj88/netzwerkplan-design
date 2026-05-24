@@ -267,10 +267,10 @@
   /* ============ END WIZARD CONTROLS ============ */
 
   /* ============ MODALS (Section 8 wizards) ============ */
-  .modal { position: fixed; inset: 0; z-index: 200; display: none; }
+  .modal { position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 1001; display: none; }
   .modal.open { display: flex; align-items: center; justify-content: center; }
   .modal-backdrop {
-    position: absolute; inset: 0;
+    position: absolute; top: 0; right: 0; bottom: 0; left: 0;
     background: rgba(15, 23, 42, .65);
     opacity: 0;
     transition: opacity .25s ease;
@@ -2068,7 +2068,8 @@
   // Lazy-load video src on demand (avoid preloading 3 videos at once)
   function ensureVideoSrc(i) {
     const v = videos[i];
-    if (v && !v.src && v.dataset.src) { v.src = v.dataset.src; v.load(); }
+    // Use getAttribute to check actual HTML attribute (v.src returns full absolute URL even when empty)
+    if (v && !v.getAttribute('src') && v.dataset.src) { v.src = v.dataset.src; v.load(); }
   }
 
   function tryPlay(v) {
@@ -2117,12 +2118,17 @@
   dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
 
   // Tap play button toggles play/pause for current video
+  // IMPORTANT: call v.play() synchronously here — async call loses iOS user-gesture context
   slider.querySelectorAll('.video-play-btn').forEach((btn, i) => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       ensureVideoSrc(i);
       const v = videos[i];
-      if (v.paused) tryPlay(v); else v.pause();
+      if (v.paused) {
+        v.play().catch(() => {});
+      } else {
+        v.pause();
+      }
     });
   });
 
