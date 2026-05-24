@@ -1,0 +1,2452 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>NetzWerkPlan — Ordnung, Transparenz und Struktur für Ihre Bauprojekte</title>
+<meta name="description" content="Die sichere CDE-Plattform für die Baubranche. Bündelt Pläne, Dokumente und Beteiligte. ISO 27001 zertifiziert, gehostet in Deutschland. Seit 1999." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          display: ['"Plus Jakarta Sans"', 'Inter', 'ui-sans-serif', 'sans-serif'],
+        },
+        colors: {
+          brand: {
+            blue: {
+              50:  '#EEF2F9',
+              100: '#D6DFEF',
+              200: '#A9BEE0',
+              300: '#7B98D0',
+              500: '#3766C5',
+              700: '#18449C',
+              800: '#133979',
+              900: '#0F2D6B',
+            },
+            gold: {
+              50:  '#fdf9e3',
+              100: '#fbf2bd',
+              400: '#e6c533',
+              500: '#d9b500',
+              600: '#b39500',
+              700: '#8a7300',
+            },
+          },
+        },
+        boxShadow: {
+          'card':   '0 1px 2px rgba(15,23,42,.04), 0 8px 24px -8px rgba(15,23,42,.08)',
+          'cardHover': '0 1px 2px rgba(15,23,42,.06), 0 18px 40px -14px rgba(57,42,163,.18)',
+          'gold':   '0 12px 30px -10px rgba(217,181,0,.55)',
+          'navy':   '0 12px 30px -10px rgba(35,24,97,.45)',
+        },
+        backgroundImage: {
+          'grid-slate': 'linear-gradient(rgba(15,23,42,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.06) 1px, transparent 1px)',
+          'grid-dark':  'linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px)',
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body { font-family: 'Inter', system-ui, sans-serif; color: #475569; background: #fff; -webkit-font-smoothing: antialiased; }
+  h1,h2,h3,h4 { font-family: 'Plus Jakarta Sans', 'Inter', sans-serif; letter-spacing: -0.02em; }
+
+  /* reveal on scroll */
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity .65s cubic-bezier(.22,1,.36,1), transform .65s cubic-bezier(.22,1,.36,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal[data-delay="1"] { transition-delay: .08s; }
+  .reveal[data-delay="2"] { transition-delay: .16s; }
+  .reveal[data-delay="3"] { transition-delay: .24s; }
+  .reveal[data-delay="4"] { transition-delay: .32s; }
+  .reveal[data-delay="5"] { transition-delay: .40s; }
+
+  /* subtle moving gradient on hero */
+  @keyframes drift { 0% { transform: translate3d(0,0,0); } 50% { transform: translate3d(2%, -1%, 0); } 100% { transform: translate3d(0,0,0); } }
+  .drift { animation: drift 16s ease-in-out infinite; }
+
+  /* gold underline link */
+  .gold-link { position: relative; display: inline-flex; align-items: center; gap: .5rem; color: #18449C; font-weight: 600; }
+  .gold-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: -2px; height: 2px; background: #d9b500; transform: scaleX(.3); transform-origin: left; transition: transform .35s ease; }
+  .gold-link:hover::after { transform: scaleX(1); }
+  .gold-link svg { transition: transform .25s ease; }
+  .gold-link:hover svg { transform: translateX(3px); }
+
+  /* nav dropdown */
+  .nav-item:hover .nav-dd { opacity: 1; transform: translateY(0); pointer-events: auto; }
+  /* invisible bridge fills the mt-3 gap so mouse can reach dropdown */
+  .nav-dd::before { content: ''; position: absolute; top: -12px; left: 0; right: 0; height: 12px; }
+
+  /* calendar day */
+  .cal-day { transition: background-color .15s ease, color .15s ease, border-color .15s ease; }
+  .cal-day[data-disabled="true"] { color: #cbd5e1; cursor: not-allowed; }
+  .cal-day[data-selected="true"] { background: #18449C; color: #fff; border-color: #18449C; }
+  .cal-day:not([data-disabled="true"]):not([data-selected="true"]):hover { background: #EEF2F9; }
+
+  .time-slot[data-selected="true"] { background: #18449C; color: #fff; border-color: #18449C; }
+
+  /* step form option */
+  .opt[data-selected="true"] { border-color: #18449C; background: #EEF2F9; color: #0F2D6B; }
+  .opt[data-selected="true"] .opt-dot { background: #18449C; border-color: #18449C; }
+  .opt[data-selected="true"] .opt-dot::after { transform: scale(1); }
+
+  /* placeholder shimmer */
+  .ph-shimmer { background:
+    linear-gradient(110deg, rgba(255,255,255,0) 35%, rgba(255,255,255,.08) 50%, rgba(255,255,255,0) 65%),
+    radial-gradient(1200px 200px at 20% 0%, rgba(217,181,0,.18), transparent 60%),
+    #1e293b;
+    background-size: 200% 100%, auto, auto;
+    animation: shimmer 6s linear infinite;
+  }
+  @keyframes shimmer { 0% { background-position: 200% 0, 0 0, 0 0; } 100% { background-position: -200% 0, 0 0, 0 0; } }
+
+  /* fine grid bg */
+  .bg-grid-soft { background-image: linear-gradient(rgba(57,42,163,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(57,42,163,.06) 1px, transparent 1px); background-size: 56px 56px; }
+
+  /* glow */
+  .glow-gold::before { content:''; position:absolute; inset:-2px; border-radius: inherit; background: radial-gradient(60% 60% at 50% 0%, rgba(217,181,0,.45), transparent 70%); filter: blur(18px); z-index:-1; }
+
+
+  /* ── Eco card hover ── */
+  #ecoWindow {
+    transition: box-shadow .35s ease, transform .35s cubic-bezier(.34,1.56,.64,1);
+  }
+  #ecoWindow:hover {
+    box-shadow: 0 0 0 2px rgba(217,181,0,.55), 0 0 56px rgba(217,181,0,.1);
+    transform: scale(1.012);
+  }
+
+  /* Logo cards lift + gold border */
+  .eco-logo-card {
+    transition: border-color .25s ease, background .25s ease, transform .3s cubic-bezier(.34,1.56,.64,1);
+  }
+  .eco-logo-card:hover {
+    border-color: rgba(217,181,0,.85);
+    background: rgba(255,255,255,.1);
+    transform: translateY(-5px);
+  }
+  .eco-logo-card .eco-logo { transition: opacity .25s ease; }
+  .eco-logo-card:hover .eco-logo { opacity: 1; }
+
+  /* Inactive tabs flash gold one-by-one when card is hovered */
+  @keyframes tabFlash {
+    0%,100% { color: rgba(255,255,255,.5); background: transparent; border-bottom-color: transparent; }
+    50%      { color: #fff; background: rgba(255,255,255,.07); border-bottom-color: rgba(217,181,0,.5); }
+  }
+  #ecoWindow:hover .eco-tab:not([data-active="true"]) {
+    animation: tabFlash 2.4s ease-in-out infinite;
+  }
+  #ecoWindow:hover .eco-tab:nth-child(1) { animation-delay: 0s; }
+  #ecoWindow:hover .eco-tab:nth-child(2) { animation-delay: .4s; }
+  #ecoWindow:hover .eco-tab:nth-child(3) { animation-delay: .8s; }
+  #ecoWindow:hover .eco-tab:nth-child(4) { animation-delay: 1.2s; }
+  #ecoWindow:hover .eco-tab:nth-child(5) { animation-delay: 1.6s; }
+  #ecoWindow:hover .eco-tab:nth-child(6) { animation-delay: 2.0s; }
+
+  /* marquee */
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-track { animation: marquee 48s linear infinite; }
+  .marquee-track:hover { animation-play-state: paused; }
+
+  /* trust-bar logos */
+  .trust-logo {
+    width: auto;
+    object-fit: contain;
+    opacity: .85;
+    transition: opacity .35s ease, transform .35s ease;
+    flex: none;
+  }
+  .trust-logo:hover {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+
+  /* nav active link */
+  .nav-link { position:relative; }
+  .nav-link::after { content:''; position:absolute; left:50%; right:50%; bottom:-6px; height:2px; background:#d9b500; transition: left .25s ease, right .25s ease; }
+  .nav-link:hover::after { left: 20%; right: 20%; }
+
+  /* button shine */
+  .btn-shine { position: relative; overflow: hidden; }
+  .btn-shine::after { content:''; position:absolute; top:0; left:-150%; width:60%; height:100%; background: linear-gradient(110deg, transparent, rgba(255,255,255,.35), transparent); transform: skewX(-20deg); transition: left .8s ease; }
+  .btn-shine:hover::after { left: 150%; }
+
+  /* radio dot */
+  .opt-dot { width: 18px; height: 18px; border-radius: 999px; border: 2px solid #cbd5e1; position: relative; flex: none; transition: all .15s ease; }
+  .opt-dot::after { content:''; position:absolute; inset:3px; background:#fff; border-radius:999px; transform: scale(0); transition: transform .15s ease; }
+
+  /* progress dots */
+  .step-pill { height: 6px; border-radius: 999px; background: #e2e8f0; transition: background .3s ease, width .3s ease; }
+  .step-pill[data-state="active"] { background: #18449C; }
+  .step-pill[data-state="done"] { background: #d9b500; }
+
+  /* dropdown caret */
+  .caret { transition: transform .2s ease; }
+  .nav-item:hover .caret { transform: rotate(180deg); }
+
+  /* ============ WIZARD FORM CONTROLS (Section 8) ============ */
+  /* Step numbered badge */
+  .wiz-step-badge {
+    width: 28px; height: 28px;
+    border-radius: 999px;
+    background: #EEF2F9;
+    color: #18449C;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    font-size: 13px;
+    display: grid; place-items: center;
+    flex: none;
+  }
+  /* Pills (selectable tags) */
+  .pill {
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #fff;
+    border: 1.5px solid #e2e8f0;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, color .15s ease, box-shadow .15s ease;
+    white-space: nowrap;
+  }
+  .pill:hover { border-color: #cbd5e1; }
+  .pill[data-selected="true"] {
+    background: #18449C;
+    border-color: #18449C;
+    color: #fff;
+    box-shadow: 0 4px 14px -4px rgba(24, 68, 156, .35);
+  }
+  /* Timeslot boxes */
+  .timeslot {
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 2px solid #e2e8f0;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color .15s ease, background .15s ease, transform .15s ease;
+    text-align: left;
+  }
+  .timeslot:hover { border-color: #cbd5e1; }
+  .timeslot[data-selected="true"] {
+    border-color: #18449C;
+    background: #EEF2F9;
+  }
+  /* Inputs */
+  .wiz-input {
+    width: 100%;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1.5px solid #e2e8f0;
+    background: #fff;
+    color: #0f172a;
+    font-size: 14px;
+    transition: border-color .15s ease, box-shadow .15s ease;
+  }
+  .wiz-input::placeholder { color: #94a3b8; }
+  .wiz-input:focus {
+    outline: none;
+    border-color: #18449C;
+    box-shadow: 0 0 0 4px rgba(24, 68, 156, .12);
+  }
+  .wiz-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+    margin-bottom: 6px;
+  }
+  /* ============ END WIZARD CONTROLS ============ */
+
+  /* ============ MODALS (Section 8 wizards) ============ */
+  .modal { position: fixed; inset: 0; z-index: 200; display: none; }
+  .modal.open { display: flex; align-items: center; justify-content: center; }
+  .modal-backdrop {
+    position: absolute; inset: 0;
+    background: rgba(15, 23, 42, .55);
+    backdrop-filter: blur(6px);
+    opacity: 0;
+    transition: opacity .25s ease;
+  }
+  .modal.open .modal-backdrop { opacity: 1; }
+  .modal-dialog {
+    position: relative;
+    width: min(680px, calc(100vw - 32px));
+    max-height: calc(100vh - 48px);
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 40px 80px -20px rgba(15, 23, 42, .5);
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    transform: translateY(16px) scale(.98);
+    opacity: 0;
+    transition: opacity .3s ease, transform .35s cubic-bezier(.2,.7,.3,1);
+  }
+  .modal.open .modal-dialog { opacity: 1; transform: none; }
+
+  .modal-header {
+    padding: 22px 24px 0 24px;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+  }
+  .modal-close {
+    width: 36px; height: 36px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: #475569;
+    display: grid; place-items: center;
+    flex: none;
+    transition: background .15s ease, color .15s ease;
+  }
+  .modal-close:hover { background: #e2e8f0; color: #0f172a; }
+
+  .modal-body { padding: 22px 24px 24px 24px; overflow-y: auto; flex: 1; }
+
+  /* Step progress bar (top of modal) */
+  .modal-progress {
+    display: flex; gap: 6px;
+    padding: 16px 24px 0 24px;
+  }
+  .modal-progress > div {
+    flex: 1; height: 4px; border-radius: 999px;
+    background: #e2e8f0;
+    transition: background .25s ease;
+  }
+  .modal-progress > div[data-state="active"] { background: #18449C; }
+  .modal-progress > div[data-state="done"]   { background: #D9B500; }
+
+  /* Step container — fade/slide on transition */
+  .modal-step {
+    animation: stepIn .35s cubic-bezier(.2,.7,.3,1);
+  }
+  @keyframes stepIn {
+    from { opacity: 0; transform: translateX(14px); }
+    to   { opacity: 1; transform: none; }
+  }
+  .modal-step.leaving {
+    animation: stepOut .2s ease forwards;
+  }
+  @keyframes stepOut {
+    to { opacity: 0; transform: translateX(-12px); }
+  }
+
+  body.modal-open { overflow: hidden; }
+  .eco-tab {
+    position: relative;
+    display: inline-flex; align-items: center; gap: .55rem;
+    padding: 16px 14px;
+    font-size: 13.5px; font-weight: 600;
+    color: rgba(255, 255, 255, .55);
+    background: transparent;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .eco-tab:hover { color: rgba(255, 255, 255, .9); }
+  .eco-tab-icon { display: inline-grid; place-items: center; width: 18px; height: 18px; color: rgba(255, 255, 255, .4); transition: color .2s ease; }
+  .eco-tab-icon svg { width: 100%; height: 100%; }
+  .eco-tab:hover .eco-tab-icon { color: rgba(255, 255, 255, .85); }
+  .eco-tab[data-active="true"] { color: #fff; border-bottom-color: #D9B500; }
+  .eco-tab[data-active="true"] .eco-tab-icon { color: #D9B500; }
+
+  .eco-panel { animation: ecoFade .35s ease; }
+  @keyframes ecoFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* Height driven by content — no artificial min-height */
+  .eco-content { min-height: 0; }
+
+  /* Gold vertical separator between text col and logo col on desktop */
+  #ecoWindow .eco-content > div:last-child {
+    border-left: 1px solid rgba(217,181,0,.22);
+    padding-left: 2.5rem;
+  }
+  @media (max-width: 1023px) {
+    #ecoWindow .eco-content > div:last-child { border-left: none; padding-left: 0; border-top: 1px solid rgba(217,181,0,.22); padding-top: 1.5rem; }
+  }
+
+  .eco-chip {
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .08);
+    color: rgba(255, 255, 255, .9);
+    border: 1px solid rgba(255, 255, 255, .12);
+    font-size: 12.5px; font-weight: 600;
+    backdrop-filter: blur(4px);
+  }
+
+  /* Logo grid (right half) — uniform outline cards, larger */
+  .eco-logo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .eco-logo-card {
+    aspect-ratio: 16 / 10;
+    background: rgba(255,255,255,.03);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 14px;
+    display: grid; place-items: center;
+    padding: 22px;
+  }
+  .eco-logo {
+    max-height: 72px;
+    max-width: 80%;
+    width: auto;
+    object-fit: contain;
+    opacity: .9;
+  }
+
+  /* ============ WALL OF LOVE (TESTIMONIALS MARQUEE) ============ */
+  @keyframes wol-left  { from { transform: translateX(0); }      to { transform: translateX(-50%); } }
+  @keyframes wol-right { from { transform: translateX(-50%); }   to { transform: translateX(0); } }
+  .wol-track-left  { animation: wol-left 60s linear infinite; }
+  .wol-track-right { animation: wol-right 70s linear infinite; }
+  /* Pause when hovering the whole marquee zone */
+  .wol:hover .wol-track-left,
+  .wol:hover .wol-track-right { animation-play-state: paused; }
+  /* Individual card lift on hover */
+  .wol-card { transition: transform .3s ease, box-shadow .3s ease; }
+  .wol-card:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 24px 50px -18px rgba(15, 45, 107, .25); z-index: 10; }
+
+  /* ============ HERO (light, video-right) ============ */
+  /* Position the video on the right and fade its left edge into the white section */
+  .hero-video {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    object-position: center;
+    z-index: 0;
+  }
+  @media (min-width: 768px) {
+    .hero-video {
+      width: 55%;
+      max-height: 100%;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 6%, black 38%, black 100%);
+              mask-image: linear-gradient(to right, transparent 0%, transparent 6%, black 38%, black 100%);
+    }
+    /* Keep all hero content out of the bright video zone */
+    #heroContent > * { max-width: 40rem !important; }
+    #heroContent > .stat-row { max-width: none !important; }
+  }
+  @media (max-width: 767px) {
+    /* Phone: video full-bleed but soft, with subtle white wash so text wins */
+    .hero-video { opacity: .35; }
+  }
+  .hero-stat { position:relative; overflow:hidden; }
+  .hero-stat::before {
+    content:''; position:absolute; inset:0; border-radius:50%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.06) 45%, rgba(255,255,255,0) 60%);
+    opacity:0; transition:opacity .35s ease; pointer-events:none;
+  }
+  .hero-stat:hover::before { opacity:1; }
+  .hero-stat:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 20px 48px rgba(15,45,107,0.35), 0 0 0 2px rgba(217,181,0,0.45), inset 0 1px 0 rgba(255,255,255,0.3) !important;
+  }
+
+  /* ============ TWEAKS PANEL ============ */
+  #tweaks-panel { font-family: 'Inter', system-ui, sans-serif; }
+  #tweaks-panel .tw-section { border-bottom: 1px solid rgba(255,255,255,.08); }
+  #tweaks-panel .tw-section:last-child { border-bottom: 0; }
+  #tweaks-panel .tw-radio { position: relative; }
+  #tweaks-panel .tw-radio input { position: absolute; opacity: 0; pointer-events: none; }
+  #tweaks-panel .tw-radio label {
+    display: flex; align-items: center; justify-content: center;
+    padding: 8px 10px; border-radius: 8px; cursor: pointer;
+    background: rgba(255,255,255,.04); color: rgba(255,255,255,.7);
+    font-size: 12px; font-weight: 600; text-align: center;
+    border: 1px solid rgba(255,255,255,.06);
+    transition: all .15s ease;
+  }
+  #tweaks-panel .tw-radio label:hover { background: rgba(255,255,255,.08); color: #fff; }
+  #tweaks-panel .tw-radio input:checked + label {
+    background: #d9b500; color: #0F2D6B; border-color: #d9b500;
+  }
+
+  /* ============ TESTIMONIALS (Section 7) – Focus Carousel ============ */
+  #testi { background:#F0F5FF; padding:88px 0 88px; position:relative; overflow:hidden; }
+  #testi .t-wrap { max-width:1280px; margin:0 auto; padding:0 32px; position:relative; z-index:1; }
+  #testi .t-head { text-align:center; max-width:680px; margin:0 auto 48px; }
+  #testi .t-label { font-size:12px !important; font-weight:700 !important; letter-spacing:.18em; text-transform:uppercase; color:#3766C5 !important; margin:0; }
+  #testi .t-h2 { margin:12px 0 0; font-family:'Plus Jakarta Sans',Inter,sans-serif; font-weight:800; font-size:clamp(26px,4vw,46px); color:#0F2D6B !important; letter-spacing:-.02em; line-height:1.15; }
+  #testi .t-sub { margin:16px 0 0; font-size:17px; line-height:1.6; color:#64748b !important; }
+  #testi .t-overflow { overflow:hidden; position:relative; }
+  #testi .t-overflow::before, #testi .t-overflow::after { content:''; position:absolute; top:0; bottom:0; width:200px; z-index:3; pointer-events:none; }
+  #testi .t-overflow::before { left:0; background:linear-gradient(to right,#F0F5FF 15%,transparent); }
+  #testi .t-overflow::after  { right:0; background:linear-gradient(to left,#F0F5FF 15%,transparent); }
+  #testi .t-track { display:flex !important; gap:28px; will-change:transform; padding:64px 0 36px; transition:transform .55s cubic-bezier(.4,0,.2,1); }
+  #testi .t-logo { max-height:46px; max-width:140px; width:auto; object-fit:contain; flex-shrink:0; }
+  /* Slides */
+  #testi .t-slide { flex-shrink:0; width:520px; background:#fff !important; border-radius:20px; border:2px solid rgba(55,102,197,.18); padding:56px 32px 32px; display:flex !important; flex-direction:column !important; transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .5s ease,border-color .3s ease,box-shadow .3s ease; opacity:.45; transform:scale(.92); cursor:pointer; position:relative; overflow:visible; }
+  #testi .t-slide.active { opacity:1 !important; transform:scale(1) !important; cursor:default; border-color:rgba(55,102,197,.32) !important; box-shadow:0 4px 24px rgba(15,45,107,.08); }
+  #testi .t-slide.active:hover { border-color:rgba(55,102,197,.55) !important; box-shadow: inset 0 1px 0 rgba(255,255,255,.95), inset 1px 0 0 rgba(255,255,255,.6), 0 0 0 1px rgba(55,102,197,.25), 0 20px 48px rgba(15,45,107,.18) !important; transform:scale(1.01) !important; }
+  #testi .t-slide.adj { opacity:.62; transform:scale(.95); }
+  /* Giant quote mark overflows top of card */
+  #testi .t-slide > svg { position:absolute; top:-38px; left:28px; width:88px; height:72px; opacity:.18; transition:opacity .4s ease; }
+  #testi .t-slide.active > svg { opacity:.9; }
+  #testi .t-slide.adj > svg { opacity:.1; }
+  #testi .t-quote { margin:20px 0 0; flex:1; color:#334155 !important; font-size:16px; line-height:1.78; }
+  #testi .t-foot { margin-top:28px; padding-top:20px; border-top:1px solid rgba(15,45,107,.08); display:flex !important; align-items:center; gap:14px; }
+  #testi .t-avatar { width:42px !important; height:42px !important; border-radius:50%; color:#fff; display:flex !important; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; font-family:'Plus Jakarta Sans',Inter,sans-serif; }
+  #testi .t-name { font-weight:700; color:#0F2D6B !important; font-size:14px; line-height:1.35; }
+  #testi .t-role { font-size:12.5px; color:#94a3b8 !important; margin-top:3px; }
+  #testi .t-nav { display:flex !important; align-items:center; justify-content:center; gap:20px; margin-top:32px; }
+  #testi .t-arrow { width:44px; height:44px; border-radius:50%; border:1.5px solid rgba(15,45,107,.15); background:#fff; color:#18449C; display:flex !important; align-items:center; justify-content:center; cursor:pointer; transition:background .2s ease,border-color .2s ease,color .2s ease; flex-shrink:0; box-shadow:0 2px 8px rgba(15,45,107,.08); }
+  #testi .t-arrow:hover:not([disabled]) { background:#3766C5; color:#fff; border-color:#3766C5; }
+  #testi .t-arrow[disabled] { opacity:.3; cursor:default; pointer-events:none; }
+  #testi .t-dots { display:flex; gap:8px; align-items:center; }
+  #testi .t-dot { width:8px; height:8px; border-radius:999px; background:rgba(15,45,107,.15); border:none; padding:0; cursor:pointer; transition:background .25s ease,width .25s ease; }
+  #testi .t-dot.active { background:#3766C5; width:24px; }
+  #testi .t-glow1 { display:none; }
+  #testi .t-glow2 { display:none; }
+  @media (max-width:900px) {
+    #testi .t-slide { width:min(440px,calc(100vw - 120px)); padding:48px 28px 28px; }
+    #testi .t-overflow::before, #testi .t-overflow::after { width:80px; }
+  }
+  @media (max-width:580px) {
+    #testi .t-slide { width:calc(100vw - 80px); padding:48px 20px 20px; }
+    #testi .t-overflow::before, #testi .t-overflow::after { width:32px; }
+    #testi .t-quote { font-size:15px; }
+  }
+</style>
+</head>
+<body class="font-sans text-slate-600 antialiased">
+
+<!-- ================= SECTION 1: STICKY NAVBAR ================= -->
+<header id="navbar" class="sticky top-0 z-50 bg-brand-blue-700 text-white transition-shadow duration-300">
+  <div class="px-6 lg:px-12 xl:px-16">
+    <div class="flex items-center h-16 lg:h-[72px]">
+
+      <!-- Logo -->
+      <a href="#" class="flex items-center group flex-none" data-screen-label="Logo">
+        <img src="assets/logo-netzwerkplan.svg" alt="NetzWerkPlan — an orca group company" class="h-10 lg:h-12 w-auto transition-transform group-hover:scale-[1.02]" />
+      </a>
+
+      <!-- Nav + CTAs pushed right -->
+      <div class="ml-auto hidden lg:flex items-center gap-4">
+
+      <!-- Center nav (desktop) -->
+      <nav class="flex items-center gap-5 text-[13.5px] font-medium">
+
+        <!-- Lösungen -->
+        <div class="nav-item relative">
+          <a href="#solutions" class="nav-link flex items-center gap-1 text-white/85 hover:text-white">
+            Lösungen
+          </a>
+          <div class="nav-dd absolute left-1/2 -translate-x-1/2 top-full mt-3 w-96 bg-white text-slate-700 rounded-xl shadow-xl ring-1 ring-slate-200 p-2 opacity-0 -translate-y-1 pointer-events-none transition">
+            <div class="grid grid-cols-2 gap-0.5">
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Projektraum winplan 2.0</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">winplan 2.0 App</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">BIM-CDE bimplan</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">BIM-CDE wpsquirrel</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Bautagebuch</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Protokollmanagement</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Mängelmanagement</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">2D-Viewer</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Sicherheit</div></a>
+              <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">QR-Code</div></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Use Cases -->
+        <div class="nav-item relative">
+          <a href="#solutions" class="nav-link flex items-center gap-1 text-white/85 hover:text-white">
+            Use Cases
+          </a>
+          <div class="nav-dd absolute left-1/2 -translate-x-1/2 top-full mt-3 w-72 bg-white text-slate-700 rounded-xl shadow-xl ring-1 ring-slate-200 p-2 opacity-0 -translate-y-1 pointer-events-none transition">
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Projektraum Bau</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Common Data Environment (CDE)</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">BIM Viewer</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Baustellendokumentation</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Planserver</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">IFC Viewer</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Interview mit öffentlichem Bauherren</div></a>
+          </div>
+        </div>
+
+        <!-- Über uns -->
+        <div class="nav-item relative">
+          <a href="#trust" class="nav-link flex items-center gap-1 text-white/85 hover:text-white">
+            Über uns
+          </a>
+          <div class="nav-dd absolute left-1/2 -translate-x-1/2 top-full mt-3 w-64 bg-white text-slate-700 rounded-xl shadow-xl ring-1 ring-slate-200 p-2 opacity-0 -translate-y-1 pointer-events-none transition">
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Unsere Philosophie</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Pressemitteilung Orca Group</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Karriere</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Kooperationen</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Mitgliedschaften</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">20 Jahre NetzWerkPlan</div></a>
+          </div>
+        </div>
+
+        <!-- Kunden -->
+        <div class="nav-item relative">
+          <a href="#testi" class="nav-link flex items-center gap-1 text-white/85 hover:text-white">
+            Kunden
+          </a>
+          <div class="nav-dd absolute left-1/2 -translate-x-1/2 top-full mt-3 w-52 bg-white text-slate-700 rounded-xl shadow-xl ring-1 ring-slate-200 p-2 opacity-0 -translate-y-1 pointer-events-none transition">
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Unsere Kunden</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Kundenstimmen</div></a>
+          </div>
+        </div>
+
+        <!-- Service -->
+        <div class="nav-item relative">
+          <a href="#eco" class="nav-link flex items-center gap-1 text-white/85 hover:text-white">
+            Service
+          </a>
+          <div class="nav-dd absolute left-1/2 -translate-x-1/2 top-full mt-3 w-52 bg-white text-slate-700 rounded-xl shadow-xl ring-1 ring-slate-200 p-2 opacity-0 -translate-y-1 pointer-events-none transition">
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Schnelleinstieg</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Schulungsvideos</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">AGB</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Datenschutz</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Impressum</div></a>
+          </div>
+        </div>
+
+        <!-- Kontakt -->
+        <div class="nav-item relative">
+          <a href="#cta" class="nav-link flex items-center gap-1 text-white/85 hover:text-white">
+            Kontakt
+          </a>
+          <div class="nav-dd absolute right-0 top-full mt-3 w-64 bg-white text-slate-700 rounded-xl shadow-xl ring-1 ring-slate-200 p-2 opacity-0 -translate-y-1 pointer-events-none transition">
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50">
+              <div class="flex items-center justify-between gap-2">
+                <div class="font-semibold text-slate-900 text-sm">Live-Demo / Präsentation</div>
+                <span class="text-[10px] font-bold uppercase tracking-wide text-brand-blue-500 bg-brand-blue-50 px-1.5 py-0.5 rounded">Popup</span>
+              </div>
+            </a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50">
+              <div class="flex items-center justify-between gap-2">
+                <div class="font-semibold text-slate-900 text-sm">Individuelles Angebot</div>
+                <span class="text-[10px] font-bold uppercase tracking-wide text-brand-blue-500 bg-brand-blue-50 px-1.5 py-0.5 rounded">Popup</span>
+              </div>
+            </a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Allgemeines Kontaktformular</div></a>
+            <a href="#" class="block p-3 rounded-lg hover:bg-slate-50"><div class="font-semibold text-slate-900 text-sm">Supportformular</div></a>
+          </div>
+        </div>
+
+      </nav>
+
+      <!-- Lang + Theme (right of nav) -->
+      <div class="flex items-center gap-1 ml-2">
+        <button id="langToggle" onclick="toggleLang()" class="px-2 py-1 text-[11px] font-bold text-white/60 hover:text-white hover:bg-white/10 rounded transition select-none">DE</button>
+        <button id="themeToggle" onclick="toggleTheme()" class="w-7 h-7 rounded-md grid place-items-center text-white/60 hover:text-white hover:bg-white/10 transition" title="Theme wechseln">
+          <svg id="iconSun" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          <svg id="iconMoon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
+        </button>
+      </div>
+
+      <!-- Separator -->
+      <div class="w-px h-5 bg-white/20 mx-3"></div>
+
+      <!-- CTAs -->
+      <div class="flex items-center gap-2.5">
+        <a href="#cta" class="px-4 py-2 rounded-lg border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition">Angebot erhalten</a>
+        <a href="#cta" class="btn-shine px-4 py-2 rounded-lg bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-blue-900 text-sm font-bold shadow-gold transition">
+          Jetzt Live-Demo sichern
+        </a>
+      </div>
+      </div><!-- end ml-auto wrapper -->
+
+      <!-- Mobile burger -->
+      <button id="mobBurger" class="lg:hidden w-10 h-10 grid place-items-center rounded-lg hover:bg-white/10">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobMenu" class="lg:hidden hidden pb-5 border-t border-white/10 pt-4">
+      <div class="grid gap-0 text-[15px]">
+        <div class="py-2 text-white font-semibold">Lösungen</div>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Projektraum winplan 2.0</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">winplan 2.0 App</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">BIM-CDE bimplan</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">BIM-CDE wpsquirrel</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Bautagebuch</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Protokollmanagement</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Mängelmanagement</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">2D-Viewer</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Sicherheit</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">QR-Code</a>
+        <div class="py-2 mt-2 text-white font-semibold">Use Cases</div>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Projektraum Bau</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Common Data Environment (CDE)</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">BIM Viewer</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Baustellendokumentation</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Planserver</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">IFC Viewer</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Interview mit öffentlichem Bauherren</a>
+        <div class="py-2 mt-2 text-white font-semibold">Über uns</div>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Unsere Philosophie</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Pressemitteilung Orca Group</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Karriere</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Kooperationen</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Mitgliedschaften</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">20 Jahre NetzWerkPlan</a>
+        <div class="py-2 mt-2 text-white font-semibold">Kunden</div>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Unsere Kunden</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Kundenstimmen</a>
+        <div class="py-2 mt-2 text-white font-semibold">Service</div>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Schnelleinstieg</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Schulungsvideos</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">AGB</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Datenschutz</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Impressum</a>
+        <div class="py-2 mt-2 text-white font-semibold">Kontakt</div>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Live-Demo / Präsentation</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Individuelles Angebot</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Allgemeines Kontaktformular</a>
+        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Supportformular</a>
+      </div>
+      <div class="grid grid-cols-2 gap-2 mt-4">
+        <a href="#cta" class="px-4 py-2.5 rounded-lg border border-white/40 text-white text-sm font-semibold text-center">Angebot</a>
+        <a href="#cta" class="px-4 py-2.5 rounded-lg bg-brand-gold-500 text-brand-blue-900 text-sm font-bold text-center">Live-Demo</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= SECTION 2: HERO (light theme) ================= -->
+<section id="hero" class="hero relative overflow-hidden bg-white text-slate-900" data-screen-label="Hero">
+
+  <!-- Subtle blue glow accent (decorative, on white) -->
+  <div class="absolute -top-40 -left-40 w-[700px] h-[700px] rounded-full pointer-events-none opacity-60" style="background: radial-gradient(closest-side, rgba(24, 68, 156, .12), transparent 70%); filter: blur(20px);"></div>
+  <div class="absolute -bottom-40 right-1/3 w-[500px] h-[500px] rounded-full pointer-events-none opacity-50" style="background: radial-gradient(closest-side, rgba(217, 181, 0, .12), transparent 70%); filter: blur(20px);"></div>
+
+  <!-- VIDEO (right side, masked left-fade into white) -->
+  <video class="hero-video" autoplay muted loop playsinline preload="auto">
+    <source src="assets/hero-bg3.mp4" type="video/mp4" />
+  </video>
+
+  <div id="heroContent" class="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 pt-16 lg:pt-28 pb-20 lg:pb-32">
+
+    <!-- trust badge -->
+    <div class="reveal inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-medium">
+      <span class="w-1.5 h-1.5 rounded-full bg-brand-gold-500"></span>
+      <span class="text-brand-blue-900 font-semibold">NetzWerkPlan</span>
+      <span class="text-slate-400">·</span>
+      <span class="text-slate-600">Seit 1999</span>
+      <span class="text-slate-400">·</span>
+      <span class="text-slate-600 flex items-center gap-1">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 36 24" aria-hidden="true"><rect width="36" height="8" y="0" fill="#000"/><rect width="36" height="8" y="8" fill="#DD0000"/><rect width="36" height="8" y="16" fill="#FFCE00"/></svg>
+        Made in Germany
+      </span>
+    </div>
+
+    <!-- Headline -->
+    <h1 class="hero-headline reveal mt-6 text-4xl md:text-5xl lg:text-[64px] lg:leading-[1.05] font-extrabold text-slate-900">
+      Ordnung, Transparenz und
+      <span class="relative inline-block mr-2">
+        <span class="relative z-10">Struktur</span>
+        <svg class="absolute -bottom-2 left-0 w-full" height="14" viewBox="0 0 220 14" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M2 9 Q 60 2, 120 8 T 218 6" stroke="#d9b500" stroke-width="5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </span>für Ihre Bauprojekte.
+    </h1>
+
+    <!-- Subline -->
+    <p class="hero-subline reveal mt-6 text-lg lg:text-xl text-slate-600 leading-relaxed">
+      Die sichere CDE-Plattform, die Pläne, Dokumente und alle Beteiligten bündelt. Zertifiziert nach <span class="text-slate-900 font-semibold">ISO 27001</span> und gehostet in deutschen Rechenzentren.
+    </p>
+
+    <!-- CTAs -->
+    <div class="reveal mt-9 flex flex-col sm:flex-row gap-3">
+      <a href="#cta" class="btn-shine inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-blue-900 font-bold shadow-gold transition">
+        Kostenlose Live-Demo sichern
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      </a>
+      <a href="https://youtu.be/TNVPgzRE0es" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-[#FF0000] hover:bg-[#cc0000] text-white font-semibold shadow-lg shadow-red-500/20 hover:shadow-red-500/30 transition">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="white" d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
+          <path fill="#FF0000" d="m9.545 15.568 6.272-3.568-6.272-3.568z"/>
+        </svg>
+        3-Minuten Einblick ansehen
+      </a>
+    </div>
+
+    <!-- Trust stats — 3 circular cards -->
+    <div class="reveal stat-row mt-12 flex items-center gap-7">
+
+      <!-- 25+ Jahre -->
+      <div class="hero-stat rounded-full bg-brand-blue-700 ring-1 ring-brand-blue-500/30 flex flex-col items-center justify-center text-center flex-none transition duration-300 w-[168px] h-[168px] md:w-[186px] md:h-[186px]">
+        <div class="text-[10px] font-bold uppercase tracking-[0.13em] text-brand-gold-400">Seit 1999</div>
+        <div class="mt-2 font-display font-extrabold text-[36px] leading-none text-white tracking-tight">
+          <span class="stat-num" data-target="25" data-decimals="0">0</span><span class="text-brand-gold-400">+</span>
+        </div>
+        <div class="text-[12px] text-white/60 font-medium mt-1.5">Jahre Erfahrung</div>
+      </div>
+
+      <!-- 99,9 % -->
+      <div class="hero-stat rounded-full bg-brand-blue-700 ring-1 ring-brand-blue-500/30 flex flex-col items-center justify-center text-center flex-none transition duration-300 w-[168px] h-[168px] md:w-[186px] md:h-[186px]">
+        <div class="text-[10px] font-bold uppercase tracking-[0.13em] text-brand-gold-400">Uptime</div>
+        <div class="mt-2 font-display font-extrabold text-[34px] leading-none text-white tracking-tight">
+          <span class="stat-num" data-target="99.9" data-decimals="1" data-sep=",">0</span><span class="text-white/45 text-xl"> %</span>
+        </div>
+        <div class="text-[12px] text-white/60 font-medium mt-1.5">Verfügbarkeit</div>
+      </div>
+
+      <!-- 800 Mio € -->
+      <div class="hero-stat rounded-full bg-brand-blue-700 ring-1 ring-brand-blue-500/30 flex flex-col items-center justify-center text-center flex-none transition duration-300 w-[168px] h-[168px] md:w-[186px] md:h-[186px]">
+        <div class="text-[10px] font-bold uppercase tracking-[0.13em] text-brand-gold-400">Skalierbar</div>
+        <div class="mt-2 font-display font-extrabold leading-none text-white tracking-tight">
+          <span class="stat-num text-[36px]" data-target="800" data-decimals="0">0</span><span class="text-white/45 text-base font-bold ml-0.5">Mio€</span>
+        </div>
+        <div class="text-[12px] text-white/60 font-medium mt-1.5">Größtes Projekt</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 3: TRUST BAR ================= -->
+<section class="overflow-hidden" style="background:#F0F5FF;border-top:1px solid rgba(55,102,197,.1);border-bottom:1px solid rgba(55,102,197,.1);">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-10">
+    <p class="text-center text-[11.5px] tracking-[0.18em] font-semibold text-slate-500 uppercase">
+      Diese Bauherren und Planer vertrauen auf NetzWerkPlan
+    </p>
+    <div class="relative mt-6">
+      <div class="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-slate-50 to-transparent z-10 pointer-events-none"></div>
+      <div class="absolute right-0 top-0 bottom-0 w-16 bg-gradient-to-l from-slate-50 to-transparent z-10 pointer-events-none"></div>
+      <div class="overflow-hidden">
+        <div class="marquee-track flex items-center whitespace-nowrap w-max">
+          <!-- doubled list for seamless loop — trailing padding matches inner gap so -50% lands perfectly -->
+          <div class="flex gap-20 lg:gap-28 items-center pr-20 lg:pr-28">
+            <img src="assets/logos/sv-darmstadt.png" alt="SV Darmstadt 98" class="trust-logo h-16" />
+            <img src="assets/logos/tegut.png" alt="tegut…" class="trust-logo h-12" />
+            <img src="assets/logos/hornbach.png" alt="HORNBACH" class="trust-logo h-10" />
+            <img src="assets/logos/stadtwerke-duesseldorf.svg" alt="Stadtwerke Düsseldorf" class="trust-logo h-14" />
+            <img src="assets/logos/uni-bonn.png" alt="Universität Bonn" class="trust-logo h-11" />
+            <img src="assets/logos/lbih.webp" alt="LBIH — Landesbetrieb Bau und Immobilien Hessen" class="trust-logo h-14" />
+          </div>
+          <div class="flex gap-12 lg:gap-16 items-center pr-12 lg:pr-16" aria-hidden="true">
+            <img src="assets/logos/sv-darmstadt.png" alt="" class="trust-logo h-12" />
+            <img src="assets/logos/tegut.png" alt="" class="trust-logo h-9" />
+            <img src="assets/logos/hornbach.png" alt="" class="trust-logo h-7" />
+            <img src="assets/logos/stadtwerke-duesseldorf.svg" alt="" class="trust-logo h-10" />
+            <img src="assets/logos/uni-bonn.png" alt="" class="trust-logo h-8" />
+            <img src="assets/logos/lbih.webp" alt="" class="trust-logo h-10" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 4: SOLUTIONS (3 cards) ================= -->
+<section id="solutions" class="relative bg-white">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-28">
+
+    <div class="reveal max-w-3xl">
+      <p class="text-[12px] font-bold tracking-[0.18em] uppercase text-brand-gold-600">Durchgängige Prozesse</p>
+      <h2 class="mt-3 font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-slate-900">
+        Ein System. Für das Büro, die Baustelle und die 3D-Zukunft.
+      </h2>
+      <p class="mt-5 text-lg text-slate-600 max-w-2xl">
+        Drei nahtlos verzahnte Werkzeuge – auf einer Plattform, mit einem Login, einer Datenbasis.
+      </p>
+    </div>
+
+    <div class="reveal mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+
+      <!-- CARD 1 -->
+      <article class="group relative rounded-2xl bg-white ring-1 ring-brand-blue-300 shadow-card hover:shadow-cardHover hover:-translate-y-1 transition duration-300 p-7 flex flex-col">
+        <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-slate-400">Büro</div>
+        <div class="mt-3 h-10 flex items-center">
+          <img src="assets/products/winplan.svg" alt="winplan 2.0" class="h-9 w-auto" />
+        </div>
+        <div class="mt-2 text-[13px] font-semibold text-slate-500">Projektraum für das Büro</div>
+        <p class="mt-4 text-slate-600 text-[15px] leading-relaxed">
+          Ersetzen Sie aufwendigen E-Mailversand durch automatisierte Workflows. Sparen Sie <span class="font-semibold text-slate-900">30 % Zeit</span>.
+        </p>
+        <ul class="mt-5 space-y-2.5 text-[14.5px] text-slate-700">
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Unbegrenzter Speicher</li>
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>2D-Viewer im Browser</li>
+        </ul>
+        <a href="#" class="mt-auto pt-6 gold-link text-sm">
+          winplan 2.0 entdecken
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </article>
+
+      <!-- CARD 2 -->
+      <article class="group relative rounded-2xl bg-white ring-1 ring-brand-blue-300 shadow-card hover:shadow-cardHover hover:-translate-y-1 transition duration-300 p-7 flex flex-col">
+        <div class="absolute top-5 right-5 text-[10.5px] font-bold tracking-wider uppercase px-2 py-1 rounded-md bg-brand-gold-50 text-brand-gold-700 ring-1 ring-brand-gold-100">Beliebt</div>
+        <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-slate-400">Baustelle</div>
+        <div class="mt-3 h-10 flex items-center">
+          <img src="assets/products/winplan-app.svg" alt="winplan 2.0 App" class="h-9 w-auto" />
+        </div>
+        <div class="mt-2 text-[13px] font-semibold text-slate-500">Die mobile App für die Baustelle</div>
+        <p class="mt-4 text-slate-600 text-[15px] leading-relaxed">
+          Alle Pläne, Aufgaben und Kontakte mobil in der Hosentasche – auch <span class="font-semibold text-slate-900">offline</span>.
+        </p>
+        <ul class="mt-5 space-y-2.5 text-[14.5px] text-slate-700">
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Mängel per Foto erfassen</li>
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Digitales Bautagebuch</li>
+        </ul>
+        <a href="#" class="mt-auto pt-6 gold-link text-sm">
+          App-Funktionen ansehen
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </article>
+
+      <!-- CARD 3 -->
+      <article class="group relative rounded-2xl bg-white ring-1 ring-brand-blue-300 shadow-card hover:shadow-cardHover hover:-translate-y-1 transition duration-300 p-7 flex flex-col">
+        <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-slate-400">3D-Zukunft</div>
+        <div class="mt-3 h-10 flex items-center">
+          <img src="assets/products/bimplan.png" alt="bimplan" class="h-9 w-auto" />
+        </div>
+        <div class="mt-2 text-[13px] font-semibold text-slate-500">BIM-Viewer & Management</div>
+        <p class="mt-4 text-slate-600 text-[15px] leading-relaxed">
+          Machen Sie komplexe <span class="font-semibold text-slate-900">3D-Modelle</span> verständlich – direkt im Browser.
+        </p>
+        <ul class="mt-5 space-y-2.5 text-[14.5px] text-slate-700">
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Open BIM (IFC)</li>
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Automatische Kollisionsprüfung</li>
+        </ul>
+        <a href="#" class="mt-auto pt-6 gold-link text-sm">
+          Mehr über BIM erfahren
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        </a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 5: ABOUT — VIDEO SLIDER ================= -->
+<section id="trust" class="relative overflow-hidden" style="background:#F0F5FF;">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-28">
+
+    <!-- Intro -->
+    <div class="reveal max-w-2xl mx-auto text-center">
+      <p class="text-[12px] font-bold tracking-[0.18em] uppercase text-brand-gold-600">Wir sind NetzWerkPlan</p>
+      <h2 class="mt-3 font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-slate-900">
+        Software von Ingenieuren für Ingenieure.
+      </h2>
+      <p class="mt-5 text-lg text-slate-600 leading-relaxed">
+        Seit über 25 Jahren entwickeln wir am Standort Darmstadt Lösungen für die komplexesten Bauprojekte Deutschlands — persönlich, agil und absolut sicher.
+      </p>
+    </div>
+
+    <!-- Slider -->
+    <div id="aboutSlider" class="reveal mt-14 relative">
+
+      <!-- Slide counter (top-right) -->
+      <div class="hidden md:flex absolute top-0 right-0 -translate-y-12 items-center gap-3 z-10">
+        <span class="text-sm text-slate-500"><span id="slideCurr" class="font-display font-bold text-slate-900">01</span><span class="text-slate-400"> / 03</span></span>
+        <div class="flex gap-1.5">
+          <button class="slideNav prev w-9 h-9 rounded-full bg-white ring-1 ring-slate-200 hover:ring-brand-blue-700 hover:text-brand-blue-700 text-slate-600 grid place-items-center transition disabled:opacity-40" aria-label="Vorherige Slide">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="slideNav next w-9 h-9 rounded-full bg-brand-blue-700 hover:bg-brand-blue-800 text-white grid place-items-center transition disabled:opacity-40" aria-label="Nächste Slide">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Track -->
+      <div class="overflow-hidden rounded-3xl">
+        <div id="slideTrack" class="flex transition-transform duration-700 ease-[cubic-bezier(.5,.1,.25,1)]" style="transform: translateX(0)">
+
+          <!-- SLIDE 1: Sicherheit -->
+          <div class="slide w-full flex-none grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6" data-slide="0">
+            <!-- Video -->
+            <div class="lg:col-span-7 relative rounded-3xl overflow-hidden bg-brand-blue-900 aspect-video lg:aspect-auto lg:min-h-[440px] group">
+              <video class="slide-video absolute inset-0 w-full h-full object-cover" muted loop playsinline preload="metadata" data-src="assets/videos/team-ueber-uns.mp4"></video>
+              <div class="absolute inset-0 bg-gradient-to-tr from-brand-blue-900/40 via-transparent to-transparent pointer-events-none"></div>
+              <button class="video-play-btn absolute inset-0 grid place-items-center" aria-label="Video abspielen">
+                <span class="play-icon w-16 h-16 rounded-full bg-brand-gold-500 shadow-gold grid place-items-center text-brand-blue-900 transition-transform group-hover:scale-110">
+                  <svg class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+              </button>
+              <div class="absolute left-5 top-5 inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-black/30 backdrop-blur-md text-[11px] font-bold tracking-wider uppercase text-brand-gold-400 ring-1 ring-white/15">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-gold-500"></span>
+                Team & Sicherheit
+              </div>
+            </div>
+            <!-- Content card -->
+            <div class="lg:col-span-5 bg-white rounded-3xl border-2 border-brand-blue-200 shadow-card hover:shadow-cardHover hover:border-brand-blue-400 transition duration-300 p-7 lg:p-9 flex flex-col">
+              <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-600">Kapitel 01 — Vertrauen</div>
+              <h3 class="mt-3 font-display font-bold text-2xl lg:text-3xl text-slate-900 leading-tight">
+                Vertrauen durch absolute Sicherheit.
+              </h3>
+              <p class="mt-4 text-slate-600 leading-relaxed">
+                Wir sind inhabergeführt und wissen aus eigener Erfahrung, worauf es am Bau ankommt. Ihre sensiblen Projektdaten liegen bei uns in den sichersten Händen: zertifiziert nach <span class="font-semibold text-slate-900">ISO 27001</span>, mit über <span class="font-semibold text-slate-900">240 eigenen Servern</span> in deutschen Hochsicherheits-Rechenzentren und garantierter Verfügbarkeit von <span class="font-semibold text-slate-900">99,9 %</span>.
+              </p>
+              <div class="mt-auto">
+                <div class="pt-6 flex flex-wrap gap-2">
+                  <span class="px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-semibold text-brand-blue-700">ISO 27001</span>
+                  <span class="px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-semibold text-brand-blue-700">Made in Germany</span>
+                  <span class="px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-semibold text-brand-blue-700">99,9 % Verfügbarkeit</span>
+                </div>
+                <div class="mt-4 flex justify-end">
+                  <a href="#" class="gold-link inline-flex items-center gap-1.5 text-[14px] font-semibold">Mehr erfahren <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 2: Agile / Scrum -->
+          <div class="slide w-full flex-none grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6" data-slide="1">
+            <div class="lg:col-span-7 relative rounded-3xl overflow-hidden bg-brand-blue-900 aspect-video lg:aspect-auto lg:min-h-[440px] group">
+              <video class="slide-video absolute inset-0 w-full h-full object-cover" muted loop playsinline preload="metadata" data-src="assets/videos/scrum-team.mp4"></video>
+              <div class="absolute inset-0 bg-gradient-to-tr from-brand-blue-900/40 via-transparent to-transparent pointer-events-none"></div>
+              <button class="video-play-btn absolute inset-0 grid place-items-center" aria-label="Video abspielen">
+                <span class="play-icon w-16 h-16 rounded-full bg-brand-gold-500 shadow-gold grid place-items-center text-brand-blue-900 transition-transform group-hover:scale-110">
+                  <svg class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+              </button>
+              <div class="absolute left-5 top-5 inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-black/30 backdrop-blur-md text-[11px] font-bold tracking-wider uppercase text-brand-gold-400 ring-1 ring-white/15">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-gold-500"></span>
+                Scrum Team
+              </div>
+            </div>
+            <div class="lg:col-span-5 bg-white rounded-3xl border-2 border-brand-blue-200 shadow-card hover:shadow-cardHover hover:border-brand-blue-400 transition duration-300 p-7 lg:p-9 flex flex-col">
+              <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-600">Kapitel 02 — Entwicklung</div>
+              <h3 class="mt-3 font-display font-bold text-2xl lg:text-3xl text-slate-900 leading-tight">
+                Agile Entwicklung nah an der Praxis.
+              </h3>
+              <p class="mt-4 text-slate-600 leading-relaxed">
+                Stillstand gibt es bei uns nicht. Unsere Entwickler und Product Owner arbeiten nach der bewährten <span class="font-semibold text-slate-900">Scrum-Methode</span> in <span class="font-semibold text-slate-900">2-Wochen-Sprints</span>. Jedes neue Feature entsteht im direkten Dialog mit der Bau-Praxis und durchläuft ein strenges <span class="font-semibold text-slate-900">4-Augen-Prinzip</span>. So wächst winplan exakt mit Ihren echten Anforderungen.
+              </p>
+              <div class="mt-auto">
+                <div class="pt-6 flex flex-wrap gap-2">
+                  <span class="px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-semibold text-brand-blue-700">Scrum-Methode</span>
+                  <span class="px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-semibold text-brand-blue-700">2-Wochen-Sprints</span>
+                  <span class="px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-semibold text-brand-blue-700">Kundengetrieben</span>
+                </div>
+                <div class="mt-4 flex justify-end">
+                  <a href="#" class="gold-link inline-flex items-center gap-1.5 text-[14px] font-semibold">Mehr erfahren <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 3: Skalierbar -->
+          <div class="slide w-full flex-none grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6" data-slide="2">
+            <div class="lg:col-span-7 relative rounded-3xl overflow-hidden bg-brand-blue-900 aspect-video lg:aspect-auto lg:min-h-[440px] group">
+              <video class="slide-video absolute inset-0 w-full h-full object-cover" muted loop playsinline preload="metadata" data-src="assets/videos/baustelle.mp4"></video>
+              <div class="absolute inset-0 bg-gradient-to-tr from-brand-blue-900/40 via-transparent to-transparent pointer-events-none"></div>
+              <button class="video-play-btn absolute inset-0 grid place-items-center" aria-label="Video abspielen">
+                <span class="play-icon w-16 h-16 rounded-full bg-brand-gold-500 shadow-gold grid place-items-center text-brand-blue-900 transition-transform group-hover:scale-110">
+                  <svg class="w-6 h-6 ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+              </button>
+              <div class="absolute left-5 top-5 inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-black/30 backdrop-blur-md text-[11px] font-bold tracking-wider uppercase text-brand-gold-400 ring-1 ring-white/15">
+                <span class="w-1.5 h-1.5 rounded-full bg-brand-gold-500"></span>
+                Großprojekte
+              </div>
+            </div>
+            <div class="lg:col-span-5 bg-white rounded-3xl border-2 border-brand-blue-200 shadow-card hover:shadow-cardHover hover:border-brand-blue-400 transition duration-300 p-7 lg:p-9 flex flex-col">
+              <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-600">Kapitel 03 — Skalierung</div>
+              <h3 class="mt-3 font-display font-bold text-2xl lg:text-3xl text-slate-900 leading-tight">
+                Skalierbar bis zum 800-Millionen-Projekt.
+              </h3>
+              <p class="mt-4 text-slate-600 leading-relaxed">
+                Ob kompaktes Wohnquartier oder gigantische Infrastrukturmaßnahmen wie das <span class="font-semibold text-slate-900">Ludwigshöhviertel in Darmstadt</span>: Unsere Cloud-Architektur ist für maximale Lasten ausgelegt. winplan bündelt mühelos zehntausende Pläne und bringt alle Beteiligten an einen virtuellen Tisch.
+              </p>
+              <div class="mt-auto">
+                <div class="pt-6 flex flex-wrap gap-2">
+                  <span class="px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-semibold text-brand-blue-700">Höchste Performance</span>
+                  <span class="px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-semibold text-brand-blue-700">Unbegrenzter Speicher</span>
+                  <span class="px-3 py-1.5 rounded-full bg-brand-blue-50 ring-1 ring-brand-blue-100 text-[12.5px] font-semibold text-brand-blue-700">Für Großprojekte</span>
+                </div>
+                <div class="mt-4 flex justify-end">
+                  <a href="#" class="gold-link inline-flex items-center gap-1.5 text-[14px] font-semibold">Mehr erfahren <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Dots + mobile arrows -->
+      <div class="mt-8 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <button class="dot group" data-dot="0" aria-label="Slide 1">
+            <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
+          </button>
+          <button class="dot group" data-dot="1" aria-label="Slide 2">
+            <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
+          </button>
+          <button class="dot group" data-dot="2" aria-label="Slide 3">
+            <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
+          </button>
+        </div>
+        <!-- mobile arrows -->
+        <div class="flex md:hidden gap-2">
+          <button class="slideNav prev w-10 h-10 rounded-full bg-white ring-1 ring-slate-200 text-slate-600 grid place-items-center" aria-label="Vorherige Slide">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="slideNav next w-10 h-10 rounded-full bg-brand-blue-700 text-white grid place-items-center" aria-label="Nächste Slide">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 6: ECOSYSTEM — ORCA GROUP TABS ================= -->
+<section id="eco" class="bg-white relative overflow-hidden">
+  <!-- subtle decorative grid -->
+  <div class="absolute inset-0 bg-grid-soft opacity-50 pointer-events-none" style="mask-image: radial-gradient(60% 60% at 50% 40%, #000, transparent 80%);"></div>
+
+  <div class="relative max-w-7xl mx-auto px-5 lg:px-8 py-20 lg:py-28">
+
+    <!-- Intro -->
+    <div class="reveal max-w-3xl">
+      <p class="text-[12px] font-bold tracking-[0.18em] uppercase text-brand-gold-600">Teil eines starken Ökosystems</p>
+      <h2 class="mt-3 font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-slate-900">
+        Alles aus einer Hand. <span class="text-slate-400">Schluss mit Insellösungen.</span>
+      </h2>
+      <p class="mt-5 text-lg text-slate-600 max-w-2xl">
+        Als Teil der Orca Group decken wir die gesamte digitale Wertschöpfungskette ab — von der ersten Skizze bis zur Bewirtschaftung. Sechs Disziplinen. Eine Familie.
+      </p>
+    </div>
+
+    <!-- Big card on brand blue -->
+    <div id="ecoWindow" class="reveal mt-12 rounded-3xl bg-brand-blue-900 text-white relative overflow-hidden">
+      <!-- subtle blue depth glow -->
+      <div class="absolute -bottom-40 -left-20 w-[500px] h-[500px] rounded-full pointer-events-none" style="background: radial-gradient(closest-side, rgba(24,68,156,.6), transparent 70%);"></div>
+
+      <!-- Tabs -->
+      <div class="relative border-b border-white/10 overflow-x-auto">
+        <div role="tablist" class="flex gap-1 px-3 lg:px-6 min-w-max">
+          <button class="eco-tab" data-tab="cde-bim" role="tab">
+            <span class="eco-tab-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l9 5v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg></span>
+            <span>CDE & BIM</span>
+          </button>
+          <button class="eco-tab" data-tab="management" role="tab">
+            <span class="eco-tab-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg></span>
+            <span>Management</span>
+          </button>
+          <button class="eco-tab" data-tab="cad" role="tab">
+            <span class="eco-tab-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM14 3h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7z"/></svg></span>
+            <span>CAD</span>
+          </button>
+          <button class="eco-tab" data-tab="ava" role="tab">
+            <span class="eco-tab-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 5h11M9 12h11M9 19h11"/><circle cx="4" cy="5" r="1.5"/><circle cx="4" cy="12" r="1.5"/><circle cx="4" cy="19" r="1.5"/></svg></span>
+            <span>AVA</span>
+          </button>
+          <button class="eco-tab" data-tab="controlling" role="tab">
+            <span class="eco-tab-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></span>
+            <span>Controlling</span>
+          </button>
+          <button class="eco-tab" data-tab="content" role="tab">
+            <span class="eco-tab-icon"><svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h10M7 17h6"/></svg></span>
+            <span>Content</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Panels -->
+      <div class="relative px-6 lg:px-12 py-10 lg:py-14 eco-panel-stack">
+
+        <!-- TAB 1: CDE & BIM -->
+        <div class="eco-panel eco-content grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12" data-panel="cde-bim">
+          <div class="lg:col-span-6">
+            <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-400">CDE & BIM</div>
+            <h3 class="mt-3 font-display font-extrabold text-2xl lg:text-3xl text-white leading-tight max-w-xl">
+              BIM-Funktionalität auf den Punkt gebracht.
+            </h3>
+            <p class="mt-5 text-white/75 leading-relaxed max-w-xl">
+              Mit der CDE- und BIM-Expertise von <span class="font-semibold text-brand-gold-400">NetzWerkPlan</span> und <span class="font-semibold text-brand-gold-400">SOFTTECH</span> entwickeln wir Tools, die den BIM-Prozess vereinfachen und effizienter gestalten — vom grafischen Aufmaß zur Mengenermittlung über 3D-BIM-Viewer bis zum digitalen Projektraum.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-2">
+              <span class="eco-chip">Common Data Environment</span>
+              <span class="eco-chip">3D-BIM-Viewer</span>
+              <span class="eco-chip">Mengenermittlung</span>
+            </div>
+          </div>
+          <div class="lg:col-span-6">
+            <div class="eco-logo-grid">
+              <div class="eco-logo-card"><img src="assets/ecosystem/netzwerk-plan.svg" alt="NetzWerkPlan" class="eco-logo" /></div>
+              <div class="eco-logo-card"><img src="assets/ecosystem/softtech.svg" alt="SOFTTECH" class="eco-logo" /></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: MANAGEMENT -->
+        <div class="eco-panel eco-content hidden grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12" data-panel="management">
+          <div class="lg:col-span-6">
+            <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-400">Management</div>
+            <h3 class="mt-3 font-display font-extrabold text-2xl lg:text-3xl text-white leading-tight max-w-xl">
+              Sichere, effiziente Baustellen — in jeder Phase.
+            </h3>
+            <p class="mt-5 text-white/75 leading-relaxed max-w-xl">
+              Mit der MANAGEMENT-Expertise von <span class="font-semibold text-brand-gold-400">BauerSoftware</span>, <span class="font-semibold text-brand-gold-400">ISHAP</span>, <span class="font-semibold text-brand-gold-400">NetzWerkPlan</span> und <span class="font-semibold text-brand-gold-400">PROJEKT PRO</span> entwickeln wir Tools, die Baustellen sicherer und effizienter gestalten. Von der ersten Planung über das Bauen bis hin zum Facility Management — für maximale Sicherheit.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-2">
+              <span class="eco-chip">Bauüberwachung</span>
+              <span class="eco-chip">Facility Management</span>
+              <span class="eco-chip">Baudokumentation</span>
+            </div>
+          </div>
+          <div class="lg:col-span-6">
+            <div class="eco-logo-grid">
+              <div class="eco-logo-card"><img src="assets/ecosystem/bauer-software.svg" alt="BauerSoftware" class="eco-logo" /></div>
+              <div class="eco-logo-card"><img src="assets/ecosystem/ishap.svg" alt="ISHAP" class="eco-logo" /></div>
+              <div class="eco-logo-card"><img src="assets/ecosystem/netzwerk-plan.svg" alt="NetzWerkPlan" class="eco-logo" /></div>
+              <div class="eco-logo-card"><img src="assets/ecosystem/projekt-pro.png" alt="PROJEKT PRO" class="eco-logo" /></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: CAD -->
+        <div class="eco-panel eco-content hidden grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12" data-panel="cad">
+          <div class="lg:col-span-6">
+            <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-400">CAD</div>
+            <h3 class="mt-3 font-display font-extrabold text-2xl lg:text-3xl text-white leading-tight max-w-xl">
+              Jede Zeichnung auf den Punkt.
+            </h3>
+            <p class="mt-5 text-white/75 leading-relaxed max-w-xl">
+              Mit der CAD-Expertise von <span class="font-semibold text-brand-gold-400">SOFTTECH</span> entwickeln wir Tools, die Planung beschleunigen, Fehler reduzieren und jede Zeichnung auf den Punkt bringen — die Basis für sichere Entscheidungen.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-2">
+              <span class="eco-chip">Architektur-CAD</span>
+              <span class="eco-chip">Präzises Aufmaß</span>
+              <span class="eco-chip">Fehlerreduktion</span>
+            </div>
+          </div>
+          <div class="lg:col-span-6">
+            <div class="eco-logo-grid">
+              <div class="eco-logo-card"><img src="assets/ecosystem/softtech.svg" alt="SOFTTECH" class="eco-logo" /></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: AVA -->
+        <div class="eco-panel eco-content hidden grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12" data-panel="ava">
+          <div class="lg:col-span-6">
+            <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-400">AVA</div>
+            <h3 class="mt-3 font-display font-extrabold text-2xl lg:text-3xl text-white leading-tight max-w-xl">
+              Ausschreibung, Vergabe, Abrechnung — lückenlos.
+            </h3>
+            <p class="mt-5 text-white/75 leading-relaxed max-w-xl">
+              Mit der AVA-Expertise von <span class="font-semibold text-brand-gold-400">ORCA Software</span>, <span class="font-semibold text-brand-gold-400">BauerSoftware</span>, <span class="font-semibold text-brand-gold-400">SOFTTECH</span> und <span class="font-semibold text-brand-gold-400">COSOBA</span> entwickeln wir Tools, die den Planungs- und Ausschreibungsprozess beschleunigen, die Auftragsvergabe spielend einfach gestalten und für lückenloses Kostenmanagement sorgen.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-2">
+              <span class="eco-chip">GAEB-konform</span>
+              <span class="eco-chip">Kostenmanagement</span>
+              <span class="eco-chip">Auftragsvergabe</span>
+            </div>
+          </div>
+          <div class="lg:col-span-6">
+            <div class="eco-logo-grid">
+              <div class="eco-logo-card"><img src="assets/ecosystem/orca.svg" alt="ORCA Software" class="eco-logo" /></div>
+              <div class="eco-logo-card"><img src="assets/ecosystem/bauer-software.svg" alt="BauerSoftware" class="eco-logo" /></div>
+              <div class="eco-logo-card"><img src="assets/ecosystem/softtech.svg" alt="SOFTTECH" class="eco-logo" /></div>
+              <div class="eco-logo-card"><img src="assets/ecosystem/cosoba.svg" alt="COSOBA" class="eco-logo" /></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: CONTROLLING -->
+        <div class="eco-panel eco-content hidden grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12" data-panel="controlling">
+          <div class="lg:col-span-6">
+            <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-400">Controlling</div>
+            <h3 class="mt-3 font-display font-extrabold text-2xl lg:text-3xl text-white leading-tight max-w-xl">
+              Sichere Entscheidungen rund ums Bauprojekt.
+            </h3>
+            <p class="mt-5 text-white/75 leading-relaxed max-w-xl">
+              Mit der CONTROLLING-Expertise von <span class="font-semibold text-brand-gold-400">Acclaro</span>, <span class="font-semibold text-brand-gold-400">BauerSoftware</span> und <span class="font-semibold text-brand-gold-400">PROJEKT PRO</span> entwickeln wir Software, um Projekte einfach zu planen, zu entwerfen und zu kalkulieren — die Basis für sichere Entscheidungen rund um das Bauprojekt.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-2">
+              <span class="eco-chip">Projektkalkulation</span>
+              <span class="eco-chip">Soll-Ist-Vergleich</span>
+              <span class="eco-chip">Honorarmanagement</span>
+            </div>
+          </div>
+          <div class="lg:col-span-6">
+            <div class="eco-logo-grid">
+              <div class="eco-logo-card"><img src="assets/ecosystem/acclaro.svg" alt="Acclaro" class="eco-logo" /></div>
+              <div class="eco-logo-card"><img src="assets/ecosystem/bauer-software.svg" alt="BauerSoftware" class="eco-logo" /></div>
+              <div class="eco-logo-card"><img src="assets/ecosystem/projekt-pro.png" alt="PROJEKT PRO" class="eco-logo" /></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 6: CONTENT -->
+        <div class="eco-panel eco-content hidden grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12" data-panel="content">
+          <div class="lg:col-span-6">
+            <div class="text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-400">Content</div>
+            <h3 class="mt-3 font-display font-extrabold text-2xl lg:text-3xl text-white leading-tight max-w-xl">
+              Die führende Content-Plattform der Baubranche.
+            </h3>
+            <p class="mt-5 text-white/75 leading-relaxed max-w-xl">
+              <span class="font-semibold text-brand-gold-400">AUSSCHREIBEN.DE</span> ist die führende Plattform für kostenfreie Ausschreibungstexte und Bauproduktdaten im DACH-Raum — zur Unterstützung bei Produktrecherche, Planung und Ausschreibung von Bauprojekten jeder Größenordnung. Strategische Partnerschaften schaffen Mehrwerte und Synergien für alle Akteure der Baubranche.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-2">
+              <span class="eco-chip">Ausschreibungstexte</span>
+              <span class="eco-chip">Bauproduktdaten</span>
+              <span class="eco-chip">DACH-Raum</span>
+            </div>
+          </div>
+          <div class="lg:col-span-6">
+            <div class="eco-logo-grid">
+              <div class="eco-logo-card"><img src="assets/ecosystem/ausschreibung.svg" alt="AUSSCHREIBEN.DE" class="eco-logo" /></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= SECTION 7: TESTIMONIALS ================= -->
+<section id="testi">
+  <!-- Scrolling logos background video -->
+  <video src="assets/videos/testi-bg.mp4" autoplay muted loop playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.06;pointer-events:none;z-index:0;filter:blur(3px) saturate(0.6);transform:scale(0.72);transform-origin:center center;"></video>
+  <div class="t-glow1"></div>
+  <div class="t-glow2"></div>
+  <div class="t-wrap">
+
+    <div class="t-head">
+      <p class="t-label">Erfolgsgeschichten aus der Praxis</p>
+      <h2 class="t-h2">Geliebt von Planern und Bauherren.</h2>
+      <p class="t-sub">Über 500 Unternehmen vertrauen täglich auf winplan.</p>
+    </div>
+
+    <div class="t-overflow">
+      <div class="t-track" id="tTrack">
+
+        <!-- 1: Anna Lupinski – HSP7 -->
+        <div class="t-slide active">
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <div class="t-quote">„winplan ist für uns als Bauträger eine große Hilfe, da alle Planer Zugriff haben und jeder auf dem aktuellsten Stand der Grundrisse, Pläne und Protokolle ist."</div>
+          <div class="t-foot">
+            <img src="assets/logos/hsp7-dark.svg" class="t-logo" alt="HSP7">
+            <div style="margin-left:auto;text-align:right;"><div class="t-name">Anna Lupinski</div><div class="t-role">Projektassistentin · HSP7 Real Estate GmbH</div></div>
+          </div>
+        </div>
+
+        <!-- 2: Norbert Uhlir – kein Logo -->
+        <div class="t-slide">
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <div class="t-quote">„Ohne das Programm winplan wäre unser Alltag im Büro nicht mehr vorstellbar und viel komplizierter."</div>
+          <div class="t-foot">
+            <img src="assets/logos/planbau.png" alt="PlanBau" style="max-height:34px;max-width:110px;object-fit:contain;flex-shrink:0;">
+            <div style="margin-left:auto;text-align:right;"><div class="t-name">Dipl.-Ing. Norbert Uhlir</div><div class="t-role">Mitinhaber · Ingenieurbüro Uhlir &amp; Jansen</div></div>
+          </div>
+        </div>
+
+        <!-- 3: Beteiligter – Südhausbau -->
+        <div class="t-slide">
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <div class="t-quote">„In winplan finde ich unsere eigenen Pläne und Dokumente schneller als auf dem heimischen Server."</div>
+          <div class="t-foot">
+            <img src="assets/logos/suedhausbau.svg" class="t-logo" alt="Südhausbau">
+            <div style="margin-left:auto;text-align:right;"><div class="t-name">Beteiligter</div><div class="t-role">Ottmann GmbH &amp; Co. Südhausbau KG</div></div>
+          </div>
+        </div>
+
+        <!-- 4: Franz Fischer – BRK -->
+        <div class="t-slide">
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <div class="t-quote">„Vielen Dank für den guten Support und die hervorragende Zusammenarbeit. Das Portal hat uns viel Zeit und Arbeit gespart."</div>
+          <div class="t-foot">
+            <img src="assets/logos/brk.svg" class="t-logo" alt="BRK" style="max-width:80px;">
+            <div style="margin-left:auto;text-align:right;"><div class="t-name">Franz Fischer</div><div class="t-role">Projektleitung Baumanagement · BRK Altötting</div></div>
+          </div>
+        </div>
+
+        <!-- 5: Stefan Kamphausen – Stadtwerke Düsseldorf -->
+        <div class="t-slide">
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <div class="t-quote">„Die Anwendung unterstützt uns in unserem Top-Projekt zum Neubau eines Trinkwasserspeichers. Der Support durch NetzWerkPlan ist stets vorbildlich."</div>
+          <div class="t-foot">
+            <img src="assets/logos/stadtwerke.svg" class="t-logo" alt="Stadtwerke Düsseldorf">
+            <div style="margin-left:auto;text-align:right;"><div class="t-name">Stefan Kamphausen</div><div class="t-role">Betriebsingenieur · Stadtwerke Düsseldorf AG</div></div>
+          </div>
+        </div>
+
+        <!-- 6: Hans-Peter Böck – kein Logo -->
+        <div class="t-slide">
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <div class="t-quote">„Wir nutzen winplan seit Jahrzehnten. Die Software hat uns maßgeblich in der Struktur und Nachvollziehbarkeit des Planversandes unterstützt – egal wie umfangreich das Projekt."</div>
+          <div class="t-foot">
+            <div class="t-avatar" style="background:#3766C5;">HB</div>
+            <div style="margin-left:auto;text-align:right;"><div class="t-name">Hans-Peter Böck</div><div class="t-role">Leiter Konstruktion · Schuster engineering GmbH</div></div>
+          </div>
+        </div>
+
+        <!-- 7: Raphael Lieser – CUBIC (kein Logo) -->
+        <div class="t-slide">
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <div class="t-quote">„Eine absolut intelligente, komplexe und dennoch einfach zu handhabende Lösung. Die automatisierten Workflows machen die Freigabe wesentlich übersichtlicher."</div>
+          <div class="t-foot">
+            <div class="t-avatar" style="background:#3766C5;">RL</div>
+            <div style="margin-left:auto;text-align:right;"><div class="t-name">Raphael Lieser</div><div class="t-role">Geschäftsführer · CUBIC S.à r.l</div></div>
+          </div>
+        </div>
+
+        <!-- 8: Sandra Gärtner – kein Logo -->
+        <div class="t-slide">
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <div class="t-quote">„Die Investition amortisiert sich durch automatische Dokumentation, Zeitersparnisse und glückliche Auftraggeber schon im ersten Jahr."</div>
+          <div class="t-foot">
+            <div class="t-avatar" style="background:#3766C5;">SG</div>
+            <div style="margin-left:auto;text-align:right;"><div class="t-name">Sandra Gärtner</div><div class="t-role">Technische Geschäftsführung · Planungsbüro Kirsch</div></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="t-nav">
+      <button class="t-arrow" id="tPrev" aria-label="Vorherige" disabled>
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="t-dots" id="tDots">
+        <button class="t-dot active"></button>
+        <button class="t-dot"></button>
+        <button class="t-dot"></button>
+        <button class="t-dot"></button>
+        <button class="t-dot"></button>
+        <button class="t-dot"></button>
+        <button class="t-dot"></button>
+        <button class="t-dot"></button>
+      </div>
+      <button class="t-arrow" id="tNext" aria-label="Nächste">
+        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+  (function(){
+    var GAP = 28;
+    var track = document.getElementById('tTrack');
+    var slides = Array.prototype.slice.call(track.querySelectorAll('.t-slide'));
+    var dots   = Array.prototype.slice.call(document.getElementById('tDots').querySelectorAll('.t-dot'));
+    var prev   = document.getElementById('tPrev');
+    var next   = document.getElementById('tNext');
+    var total  = slides.length;
+    var cur    = 0;
+
+    function go(idx) {
+      cur = Math.max(0, Math.min(total - 1, idx));
+      var cardW = slides[0].offsetWidth;
+      var W     = track.parentElement.offsetWidth;
+      var tx    = (W - cardW) / 2 - cur * (cardW + GAP);
+      track.style.transform = 'translateX(' + tx + 'px)';
+      slides.forEach(function(s, i) {
+        s.className = 't-slide' +
+          (i === cur     ? ' active' :
+           i === cur - 1 || i === cur + 1 ? ' adj' : '');
+      });
+      dots.forEach(function(d, i) {
+        d.className = 't-dot' + (i === cur ? ' active' : '');
+      });
+      prev.disabled = cur === 0;
+      next.disabled = cur === total - 1;
+    }
+
+    prev.addEventListener('click', function(){ go(cur - 1); });
+    next.addEventListener('click', function(){ go(cur + 1); });
+    dots.forEach(function(d, i){ d.addEventListener('click', function(){ go(i); }); });
+
+    var startX = 0;
+    track.addEventListener('touchstart', function(e){ startX = e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend',   function(e){
+      var diff = startX - e.changedTouches[0].clientX;
+      if (Math.abs(diff) > 50) go(cur + (diff > 0 ? 1 : -1));
+    });
+
+    window.addEventListener('resize', function(){ go(cur); });
+
+    /* Double rAF: layout must be computed before we read offsetWidth */
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ go(0); });
+    });
+
+    /* Auto-advance every 5s — pause when mouse is inside section */
+    var autoTimer;
+    var section = document.getElementById('testi');
+    var startAuto = function() {
+      clearInterval(autoTimer);
+      autoTimer = setInterval(function(){ go(cur >= total - 1 ? 0 : cur + 1); }, 5000);
+    };
+    section.addEventListener('mouseenter', function(){ clearInterval(autoTimer); });
+    section.addEventListener('mouseleave', startAuto);
+    prev.addEventListener('click', startAuto);
+    next.addEventListener('click', startAuto);
+    dots.forEach(function(d){ d.addEventListener('click', startAuto); });
+    track.addEventListener('touchend', startAuto);
+    startAuto();
+
+  })();
+  </script>
+</section>
+
+<!-- ================= SECTION 8: LEAD GEN (Two clean cards → modals) ================= -->
+<section id="cta" class="bg-white relative overflow-hidden">
+  <div class="absolute inset-0 bg-grid-soft opacity-50" style="mask-image: radial-gradient(60% 60% at 50% 40%, #000, transparent 80%);"></div>
+  <div class="relative max-w-7xl mx-auto px-5 lg:px-8 pt-20 lg:pt-28 pb-36 lg:pb-52">
+
+    <div class="reveal text-center max-w-3xl mx-auto">
+      <p class="text-[12px] font-bold tracking-[0.18em] uppercase text-brand-gold-600">Bereit für die digitale Baustelle?</p>
+      <h2 class="mt-3 font-display font-extrabold text-3xl md:text-4xl lg:text-5xl text-slate-900">
+        Machen Sie Schluss mit dem Plan-Chaos.
+      </h2>
+      <p class="mt-5 text-lg text-slate-600">
+        Wählen Sie Ihren Weg: persönliche Live-Demo oder individuelles Angebot.
+      </p>
+    </div>
+
+    <div class="reveal mt-14 grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+
+      <!-- LEFT card -->
+      <div class="rounded-2xl bg-white ring-1 ring-slate-200 shadow-card hover:shadow-cardHover hover:-translate-y-2 hover:ring-brand-blue-200 transition duration-300 p-8 lg:p-10 flex flex-col">
+        <div class="w-14 h-14 rounded-2xl bg-brand-gold-50 ring-1 ring-brand-gold-100 text-brand-gold-600 grid place-items-center">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5M16 4v5"/></svg>
+        </div>
+        <div class="mt-6 text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-blue-700">Option 1 · Persönlich</div>
+        <h3 class="mt-2 font-display font-extrabold text-2xl lg:text-3xl text-slate-900">Live-Demo sichern</h3>
+        <p class="mt-3 text-slate-600 leading-relaxed">
+          45 Minuten per Microsoft Teams. Wir zeigen Ihnen winplan 2.0 anhand Ihrer konkreten Anforderungen — kostenlos und unverbindlich.
+        </p>
+        <ul class="mt-5 space-y-2.5 text-[14.5px] text-slate-700">
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Live-Vorführung Ihres Use-Cases</li>
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Q&A mit einem Senior Consultant</li>
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Test-Zugang im Anschluss möglich</li>
+        </ul>
+        <button data-open-modal="demoModal" class="btn-shine mt-auto pt-8">
+          <span class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-blue-900 font-bold shadow-gold transition">
+            Jetzt Live-Demo anfragen
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </button>
+      </div>
+
+      <!-- RIGHT card -->
+      <div class="rounded-2xl bg-white ring-1 ring-slate-200 shadow-card hover:shadow-cardHover hover:-translate-y-2 hover:ring-brand-blue-200 transition duration-300 p-8 lg:p-10 flex flex-col">
+        <div class="w-14 h-14 rounded-2xl bg-brand-blue-50 ring-1 ring-brand-blue-100 text-brand-blue-700 grid place-items-center">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>
+        </div>
+        <div class="mt-6 text-[11.5px] font-bold tracking-[0.16em] uppercase text-brand-gold-600">Option 2 · Verbindlich</div>
+        <h3 class="mt-2 font-display font-extrabold text-2xl lg:text-3xl text-slate-900">Individuelles Angebot erhalten</h3>
+        <p class="mt-3 text-slate-600 leading-relaxed">
+          Konkrete Eckdaten, klares Preisbild. Sie erhalten ein vollständig individualisiertes Angebot — passgenau zu Ihrem Projekt.
+        </p>
+        <ul class="mt-5 space-y-2.5 text-[14.5px] text-slate-700">
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-blue-700 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Antwort innerhalb von 24 Stunden</li>
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-blue-700 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Modular preisstrukturiert</li>
+          <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-blue-700 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Inkl. Onboarding & Schulung</li>
+        </ul>
+        <button data-open-modal="offerModal" class="mt-auto pt-8">
+          <span class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-blue-700 hover:bg-brand-blue-800 text-white font-bold shadow-navy transition">
+            Angebot anfordern
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECTION 9: FOOTER ================= -->
+<footer class="bg-slate-900 text-slate-400">
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-16">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
+
+      <!-- Brand col -->
+      <div class="lg:col-span-2">
+        <a href="#" class="flex items-center">
+          <img src="assets/logo-netzwerkplan.svg" alt="NetzWerkPlan" class="h-12 w-auto" />
+        </a>
+        <p class="mt-5 text-sm leading-relaxed max-w-xs">
+          Heidelberger Landstraße 186a<br/>
+          64297 Darmstadt
+        </p>
+        <p class="mt-4 text-xs text-slate-500">Ein Unternehmen der Orca Group.</p>
+
+        <div class="mt-6 flex items-center gap-3">
+          <a href="https://www.linkedin.com/company/netzwerkplan-gmbh/" target="_blank" rel="noopener" aria-label="LinkedIn" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 ring-1 ring-white/10 grid place-items-center text-slate-300 transition">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.55 0h4.37v1.92h.06c.61-1.16 2.1-2.38 4.32-2.38 4.62 0 5.48 3.04 5.48 6.99V22h-4.56v-6.21c0-1.48-.03-3.39-2.07-3.39-2.07 0-2.39 1.62-2.39 3.29V22H7.77V8z"/></svg>
+          </a>
+          <a href="#" aria-label="Xing" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 ring-1 ring-white/10 grid place-items-center text-slate-300 transition">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3.6 4.5c-.4 0-.7.2-.9.5-.2.3-.2.6 0 .9l3 5.2-4.7 8.3c-.2.3-.2.6 0 .9.2.3.5.5.9.5h2.9c.4 0 .8-.2 1-.7l4.8-8.4-3-5.3c-.2-.5-.5-.7-1-.7H3.6zm16-3.5c-.4 0-.8.2-1 .7L9.4 17.4c.2.5.6.7 1 .7h2.9c.4 0 .7-.2.9-.5L23.8 1.9c.2-.3.2-.6 0-.9-.2-.3-.5-.5-.9-.5h-3.3z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@netzwerkplangmbh" target="_blank" rel="noopener" aria-label="YouTube" class="w-9 h-9 rounded-lg bg-white/5 hover:bg-white/10 ring-1 ring-white/10 grid place-items-center text-slate-300 transition">
+            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1c.4-1.9.5-3.8.5-5.8a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Lösungen -->
+      <div>
+        <div class="text-white font-display font-bold text-sm mb-4">Lösungen</div>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#" class="hover:text-white transition">winplan 2.0</a></li>
+          <li><a href="#" class="hover:text-white transition">winplan 2.0 App</a></li>
+          <li><a href="#" class="hover:text-white transition">bimplan</a></li>
+        </ul>
+      </div>
+
+      <!-- Unternehmen -->
+      <div>
+        <div class="text-white font-display font-bold text-sm mb-4">Unternehmen</div>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#" class="hover:text-white transition">Über uns</a></li>
+          <li><a href="#" class="hover:text-white transition">Kunden</a></li>
+          <li><a href="#" class="hover:text-white transition">Karriere</a></li>
+        </ul>
+      </div>
+
+      <!-- Service -->
+      <div>
+        <div class="text-white font-display font-bold text-sm mb-4">Service</div>
+        <ul class="space-y-2.5 text-sm">
+          <li><a href="#" class="hover:text-white transition">Support</a></li>
+          <li><a href="#" class="hover:text-white transition">Schulungsvideos</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- bottom -->
+    <div class="mt-14 pt-6 border-t border-white/10 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 text-xs text-slate-500">
+      <div>© 2026 NetzWerkPlan GmbH. Alle Rechte vorbehalten.</div>
+      <div class="flex items-center gap-5">
+        <a href="#" class="hover:text-white">Impressum</a>
+        <a href="#" class="hover:text-white">Datenschutz</a>
+        <a href="#" class="hover:text-white">AGB</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============ MOUSE GLOW ============ */
+(function(){
+  var glow = document.createElement('div');
+  glow.style.cssText = 'position:fixed;pointer-events:none;z-index:9999;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(55,102,197,0.10) 0%,rgba(55,102,197,0.04) 45%,transparent 70%);transform:translate(-50%,-50%);transition:opacity .4s ease;opacity:0;';
+  document.body.appendChild(glow);
+  var mx = 0, my = 0, active = false;
+  document.addEventListener('mousemove', function(e){
+    mx = e.clientX; my = e.clientY;
+    glow.style.left = mx + 'px';
+    glow.style.top  = my + 'px';
+    if (!active) { active = true; glow.style.opacity = '1'; }
+  });
+  document.addEventListener('mouseleave', function(){ glow.style.opacity = '0'; active = false; });
+})();
+</script>
+
+<script>
+/* ============ COUNT-UP ANIMATION ============ */
+(function(){
+  var nums = document.querySelectorAll('.stat-num');
+  if (!nums.length) return;
+  var triggered = false;
+  var obs = new IntersectionObserver(function(entries){
+    if (triggered) return;
+    if (!entries.some(function(e){ return e.isIntersecting; })) return;
+    triggered = true;
+    obs.disconnect();
+    nums.forEach(function(el){
+      var target   = parseFloat(el.dataset.target);
+      var decimals = parseInt(el.dataset.decimals || '0');
+      var sep      = el.dataset.sep || '.';
+      var duration = 1800;
+      var start    = null;
+      function easeOut(t){ return 1 - Math.pow(1 - t, 3); }
+      function step(ts){
+        if (!start) start = ts;
+        var p   = Math.min((ts - start) / duration, 1);
+        var val = target * easeOut(p);
+        el.textContent = decimals > 0
+          ? val.toFixed(decimals).replace('.', sep)
+          : Math.floor(val).toString();
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = decimals > 0
+          ? target.toFixed(decimals).replace('.', sep)
+          : target.toString();
+      }
+      requestAnimationFrame(step);
+    });
+  }, { threshold: 0.5 });
+  nums.forEach(function(el){ obs.observe(el); });
+})();
+</script>
+
+<script>
+/* ============ Sticky nav shadow ============ */
+(() => {
+  const nav = document.getElementById('navbar');
+  const onScroll = () => {
+    if (window.scrollY > 8) nav.classList.add('shadow-navy'); else nav.classList.remove('shadow-navy');
+  };
+  window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
+})();
+
+/* ============ Mobile menu ============ */
+document.getElementById('mobBurger').addEventListener('click', () => {
+  document.getElementById('mobMenu').classList.toggle('hidden');
+});
+
+/* ============ Reveal on scroll ============ */
+(() => {
+  // Auto-stagger: siblings with .reveal inside same parent get incremental delays
+  const groups = new Map();
+  document.querySelectorAll('.reveal').forEach(el => {
+    const key = el.parentElement;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(el);
+  });
+  groups.forEach(siblings => {
+    if (siblings.length > 1) {
+      siblings.forEach((el, i) => {
+        if (!el.dataset.delay) el.dataset.delay = Math.min(i + 1, 5);
+      });
+    }
+  });
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+})();
+
+/* ============ Wizard form: pills, timeslots & modals (Section 8) ============ */
+(() => {
+  // -------- Pills / timeslots: shared selection logic --------
+  const SINGLE_GROUPS = ['demoSlot', 'volume', 'participants', 'duration'];
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('.pill, .timeslot');
+    if (!btn) return;
+    e.preventDefault();
+    const group = btn.dataset.group;
+    const isSingle = SINGLE_GROUPS.includes(group);
+    if (isSingle) {
+      // scope to nearest container (so modals don't collide with the section)
+      const scope = btn.closest('.modal, section') || document;
+      scope.querySelectorAll(`[data-group="${group}"]`).forEach(b => b.removeAttribute('data-selected'));
+      btn.setAttribute('data-selected', 'true');
+    } else {
+      if (btn.getAttribute('data-selected') === 'true') btn.removeAttribute('data-selected');
+      else btn.setAttribute('data-selected', 'true');
+    }
+  });
+
+  // -------- Modal open / close --------
+  const openModal = (id) => {
+    const m = document.getElementById(id);
+    if (!m) return;
+    m.classList.add('open');
+    m.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    // YouTube modal: set iframe src on open
+    if (id === 'videoModal') {
+      const frame = m.querySelector('#videoModalFrame');
+      // Placeholder YouTube video — replace YOUTUBE_ID with the real id later
+      const youtubeId = 'TNVPgzRE0es';
+      frame.src = `https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&rel=0&modestbranding=1`;
+    } else {
+      // Reset to step 1 every time non-video modal opens
+      showStep(m, 1);
+    }
+  };
+  const closeModal = (m) => {
+    m.classList.remove('open');
+    m.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    // YouTube modal: clear src to stop playback
+    if (m.id === 'videoModal') {
+      const frame = m.querySelector('#videoModalFrame');
+      if (frame) frame.src = '';
+    }
+  };
+
+  document.querySelectorAll('[data-open-modal]').forEach(btn => {
+    btn.addEventListener('click', () => openModal(btn.dataset.openModal));
+  });
+  // Close: use event delegation so it works regardless of element nesting/timing
+  document.addEventListener('click', (e) => {
+    const closeEl = e.target.closest('[data-close-modal]');
+    if (!closeEl) return;
+    const m = closeEl.closest('.modal');
+    if (m) closeModal(m);
+  });
+  // ESC to close
+  window.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    document.querySelectorAll('.modal.open').forEach(closeModal);
+  });
+
+  // -------- Step navigation within a modal --------
+  function showStep(modal, stepKey) {
+    const steps = [...modal.querySelectorAll('.modal-step')];
+    const target = modal.querySelector(`.modal-step[data-step="${stepKey}"]`);
+    if (!target) return;
+    const current = steps.find(s => !s.classList.contains('hidden'));
+    if (current && current !== target) {
+      current.classList.add('leaving');
+      setTimeout(() => {
+        current.classList.add('hidden');
+        current.classList.remove('leaving');
+        target.classList.remove('hidden');
+        modal.querySelector('.modal-body').scrollTop = 0;
+      }, 180);
+    } else {
+      steps.forEach(s => s.classList.add('hidden'));
+      target.classList.remove('hidden');
+    }
+    // Update progress
+    const progress = modal.querySelector('.modal-progress');
+    if (progress) {
+      const total = Number(progress.dataset.modalProgress) || 0;
+      const stepNum = Number(stepKey);
+      [...progress.children].forEach((seg, i) => {
+        if (Number.isFinite(stepNum)) {
+          seg.dataset.state = (i + 1 < stepNum) ? 'done' : (i + 1 === stepNum ? 'active' : '');
+        } else {
+          // success state — all done
+          seg.dataset.state = 'done';
+        }
+      });
+    }
+  }
+
+  // next / prev buttons
+  document.addEventListener('click', (e) => {
+    const next = e.target.closest('.modal-next');
+    const prev = e.target.closest('.modal-prev');
+    if (!next && !prev) return;
+    const modal = (next || prev).closest('.modal');
+    if (!modal) return;
+    const current = modal.querySelector('.modal-step:not(.hidden)');
+    const num = Number(current.dataset.step);
+    if (next) showStep(modal, num + 1);
+    else showStep(modal, num - 1);
+  });
+
+  // submit → success
+  document.addEventListener('click', (e) => {
+    const submit = e.target.closest('.modal-submit');
+    if (!submit) return;
+    const modal = submit.closest('.modal');
+    if (!modal) return;
+    showStep(modal, 'success');
+  });
+})();
+
+
+
+/* ============ Ecosystem tabs ============ */
+(() => {
+  const root = document.getElementById('ecoWindow');
+  if (!root) return;
+  const tabs = [...root.querySelectorAll('.eco-tab')];
+  const panels = [...root.querySelectorAll('.eco-panel')];
+  function show(name) {
+    tabs.forEach(t => t.setAttribute('data-active', t.dataset.tab === name ? 'true' : 'false'));
+    panels.forEach(p => {
+      const active = p.dataset.panel === name;
+      p.classList.toggle('hidden', !active);
+      p.classList.toggle('grid', active);
+      if (active) {
+        // re-trigger animation
+        p.style.animation = 'none'; p.offsetHeight; p.style.animation = '';
+      }
+    });
+  }
+  tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.tab)));
+  show('cde-bim');
+})();
+
+/* ============ About slider ============ */
+(() => {
+  const slider = document.getElementById('aboutSlider');
+  if (!slider) return;
+  const track = slider.querySelector('#slideTrack');
+  const slides = [...slider.querySelectorAll('.slide')];
+  const dots = [...slider.querySelectorAll('.dot')];
+  const prevBtns = [...slider.querySelectorAll('.slideNav.prev')];
+  const nextBtns = [...slider.querySelectorAll('.slideNav.next')];
+  const counter = slider.querySelector('#slideCurr');
+  const videos = [...slider.querySelectorAll('.slide-video')];
+  let idx = 0;
+
+  // Lazy-load video src on demand (avoid preloading 3 videos at once)
+  function ensureVideoSrc(i) {
+    const v = videos[i];
+    if (v && !v.src && v.dataset.src) v.src = v.dataset.src;
+  }
+
+  function go(n) {
+    idx = (n + slides.length) % slides.length;
+    track.style.transform = `translateX(-${idx * 100}%)`;
+    counter.textContent = String(idx + 1).padStart(2, '0');
+    dots.forEach((d, i) => d.setAttribute('data-active', i === idx ? 'true' : 'false'));
+    // Pause all others, play active
+    videos.forEach((v, i) => {
+      if (i === idx) {
+        ensureVideoSrc(i);
+        // small delay to ensure src is set before play
+        setTimeout(() => v.play().catch(() => {}), 50);
+      } else {
+        v.pause();
+      }
+    });
+    // Preload neighbour for smoother UX
+    ensureVideoSrc((idx + 1) % slides.length);
+  }
+
+  prevBtns.forEach(b => b.addEventListener('click', () => go(idx - 1)));
+  nextBtns.forEach(b => b.addEventListener('click', () => go(idx + 1)));
+  dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+
+  // Tap play button toggles play/pause for current video
+  slider.querySelectorAll('.video-play-btn').forEach((btn, i) => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      ensureVideoSrc(i);
+      const v = videos[i];
+      if (v.paused) v.play().catch(() => {}); else v.pause();
+    });
+  });
+
+  // Hide play-icon when video plays, show when paused
+  videos.forEach((v, i) => {
+    const icon = slider.querySelectorAll('.play-icon')[i];
+    v.addEventListener('play', () => { if (icon) icon.style.opacity = '0'; });
+    v.addEventListener('pause', () => { if (icon) icon.style.opacity = '1'; });
+  });
+
+  // Keyboard navigation when slider in view
+  window.addEventListener('keydown', (e) => {
+    const rect = slider.getBoundingClientRect();
+    if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+    if (e.key === 'ArrowLeft') go(idx - 1);
+    if (e.key === 'ArrowRight') go(idx + 1);
+  });
+
+  // Touch swipe
+  let startX = 0, dx = 0, swiping = false;
+  track.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; swiping = true; dx = 0; }, { passive: true });
+  track.addEventListener('touchmove',  (e) => { if (swiping) dx = e.touches[0].clientX - startX; }, { passive: true });
+  track.addEventListener('touchend',   () => {
+    if (Math.abs(dx) > 50) { if (dx < 0) go(idx + 1); else go(idx - 1); }
+    swiping = false; dx = 0;
+  });
+
+  // Init
+  go(0);
+
+  // Auto-advance: pauses when mouse is inside slider, resets on manual nav
+  let autoTimer;
+  const startAuto = () => { clearInterval(autoTimer); autoTimer = setInterval(() => go(idx + 1), 5000); };
+  slider.addEventListener('mouseenter', () => clearInterval(autoTimer));
+  slider.addEventListener('mouseleave', startAuto);
+  prevBtns.forEach(b => b.addEventListener('click', startAuto));
+  nextBtns.forEach(b => b.addEventListener('click', startAuto));
+  dots.forEach(d => d.addEventListener('click', startAuto));
+  track.addEventListener('touchend', startAuto);
+  startAuto();
+})();
+
+/* ============ HERO TWEAKS-PANEL REMOVED ============ */
+/* Hero is now a single polished light-theme design — no more variant switching needed. */
+</script>
+
+<!-- ================= MODALS (Wizard popups for Section 8) ================= -->
+
+<!-- YOUTUBE PREVIEW MODAL -->
+<div id="videoModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="videoModalTitle">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-dialog" role="document" style="width: min(960px, calc(100vw - 32px));">
+    <div class="modal-header" style="padding-bottom: 0;">
+      <div>
+        <div class="text-[11px] font-bold uppercase tracking-[0.16em] text-[#FF0000]">Produkt-Einblick</div>
+        <h3 id="videoModalTitle" class="mt-1 font-display font-extrabold text-xl text-slate-900">winplan 2.0 in 3 Minuten</h3>
+      </div>
+      <button class="modal-close" data-close-modal aria-label="Schließen">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body" style="padding: 16px 24px 24px 24px;">
+      <div class="rounded-xl overflow-hidden bg-black aspect-video">
+        <iframe id="videoModalFrame" class="w-full h-full" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="mt-3 text-xs text-slate-500 flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24"><path fill="#FF0000" d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/><path fill="white" d="m9.545 15.568 6.272-3.568-6.272-3.568z"/></svg>
+        Eingebettet via YouTube
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE-DEMO MODAL (2 steps) -->
+<div id="demoModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="demoModalTitle">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-header">
+      <div>
+        <div class="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-blue-700">Live-Demo · 45 Minuten</div>
+        <h3 id="demoModalTitle" class="mt-1 font-display font-extrabold text-xl text-slate-900">In 2 Schritten zur persönlichen Demo</h3>
+      </div>
+      <button class="modal-close" data-close-modal aria-label="Schließen">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-progress" data-modal-progress="2">
+      <div data-state="active"></div>
+      <div></div>
+    </div>
+
+    <div class="modal-body" data-modal-body="demoModal">
+
+      <!-- Step 1 -->
+      <div class="modal-step" data-step="1">
+        <div class="flex items-center gap-3">
+          <span class="wiz-step-badge">1</span>
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Schritt 1 von 2</div>
+            <div class="font-display font-bold text-slate-900">Wofür interessieren Sie sich?</div>
+          </div>
+        </div>
+        <p class="mt-2 text-sm text-slate-500">Mehrfachauswahl möglich.</p>
+        <div class="mt-4 flex flex-wrap gap-2">
+          <button class="pill" data-group="demoTopics" data-value="Planmanagement" data-selected="true">Planmanagement</button>
+          <button class="pill" data-group="demoTopics" data-value="Dokumentenmanagement">Dokumentenmanagement</button>
+          <button class="pill" data-group="demoTopics" data-value="Protokollmanagement">Protokollmanagement</button>
+          <button class="pill" data-group="demoTopics" data-value="Mängelverfolgung">Mängelverfolgung</button>
+          <button class="pill" data-group="demoTopics" data-value="Bautagebuch" data-selected="true">Bautagebuch</button>
+          <button class="pill" data-group="demoTopics" data-value="BIM">BIM</button>
+        </div>
+
+        <div class="mt-8 flex items-center justify-end">
+          <button class="modal-next inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-blue-700 hover:bg-brand-blue-800 text-white font-bold transition">
+            Weiter
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="modal-step hidden" data-step="2">
+        <div class="flex items-center gap-3">
+          <span class="wiz-step-badge">2</span>
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Schritt 2 von 2</div>
+            <div class="font-display font-bold text-slate-900">Wann passt es Ihnen am besten?</div>
+          </div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <button class="timeslot" data-group="demoSlot" data-value="Montags 15:00 Uhr">
+            <div class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-brand-blue-700">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>
+              Webinar
+            </div>
+            <div class="mt-2 font-display font-bold text-slate-900">Montags</div>
+            <div class="text-sm text-slate-500">15:00 Uhr</div>
+          </button>
+          <button class="timeslot" data-group="demoSlot" data-value="Dienstags 10:30 Uhr">
+            <div class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-brand-blue-700">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>
+              Webinar
+            </div>
+            <div class="mt-2 font-display font-bold text-slate-900">Dienstags</div>
+            <div class="text-sm text-slate-500">10:30 Uhr</div>
+          </button>
+          <button class="timeslot" data-group="demoSlot" data-value="Donnerstags 10:30 Uhr">
+            <div class="flex items-center gap-2 text-[11px] font-bold uppercase tracking-wider text-brand-blue-700">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 4v5"/></svg>
+              Webinar
+            </div>
+            <div class="mt-2 font-display font-bold text-slate-900">Donnerstags</div>
+            <div class="text-sm text-slate-500">10:30 Uhr</div>
+          </button>
+        </div>
+
+        <button class="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-slate-500 hover:text-brand-blue-700 transition">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/></svg>
+          Kein Termin passt? Einzelpräsentation anfragen
+        </button>
+
+        <div class="mt-8 grid grid-cols-2 gap-3">
+          <button class="modal-prev inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            Zurück
+          </button>
+          <button class="modal-submit btn-shine inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-blue-900 font-bold shadow-gold transition">
+            Präsentation jetzt bestätigen
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="modal-step hidden text-center py-10" data-step="success">
+        <div class="mx-auto w-16 h-16 rounded-full bg-brand-gold-500 grid place-items-center shadow-gold">
+          <svg class="w-8 h-8 text-brand-blue-900" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="mt-5 font-display font-extrabold text-2xl text-slate-900">Termin bestätigt!</div>
+        <p class="mt-2 text-slate-600 max-w-sm mx-auto">Sie erhalten in Kürze eine Kalendereinladung per E-Mail. Wir freuen uns auf Sie.</p>
+        <button class="mt-7 modal-close-final inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition" data-close-modal>
+          Schließen
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- OFFER MODAL (3 steps) -->
+<div id="offerModal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="offerModalTitle">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-header">
+      <div>
+        <div class="text-[11px] font-bold uppercase tracking-[0.16em] text-brand-gold-600">Individuelles Angebot · Antwort in 24 Std.</div>
+        <h3 id="offerModalTitle" class="mt-1 font-display font-extrabold text-xl text-slate-900">In 3 Schritten zu Ihrem Angebot</h3>
+      </div>
+      <button class="modal-close" data-close-modal aria-label="Schließen">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-progress" data-modal-progress="3">
+      <div data-state="active"></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <div class="modal-body" data-modal-body="offerModal">
+
+      <!-- Step 1: Eckdaten -->
+      <div class="modal-step" data-step="1">
+        <div class="flex items-center gap-3">
+          <span class="wiz-step-badge">1</span>
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Schritt 1 von 3</div>
+            <div class="font-display font-bold text-slate-900">Eckdaten zum Projekt</div>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <div class="wiz-label">Projektvolumen</div>
+          <div class="flex flex-wrap gap-2">
+            <button class="pill" data-group="volume" data-value="1–5 Mio. €">1–5 Mio. €</button>
+            <button class="pill" data-group="volume" data-value="6–10 Mio. €" data-selected="true">6–10 Mio. €</button>
+            <button class="pill" data-group="volume" data-value="11–20 Mio. €">11–20 Mio. €</button>
+            <button class="pill" data-group="volume" data-value="21–30 Mio. €">21–30 Mio. €</button>
+            <button class="pill" data-group="volume" data-value="31–50 Mio. €">31–50 Mio. €</button>
+            <button class="pill" data-group="volume" data-value="51–100 Mio. €">51–100 Mio. €</button>
+            <button class="pill" data-group="volume" data-value="über 100 Mio. €">über 100 Mio. €</button>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <div class="wiz-label">Anzahl Beteiligte</div>
+          <div class="flex flex-wrap gap-2">
+            <button class="pill" data-group="participants" data-value="bis 10">bis 10</button>
+            <button class="pill" data-group="participants" data-value="11–20" data-selected="true">11–20</button>
+            <button class="pill" data-group="participants" data-value="21–50">21–50</button>
+            <button class="pill" data-group="participants" data-value="51–100">51–100</button>
+            <button class="pill" data-group="participants" data-value="über 100">über 100</button>
+          </div>
+        </div>
+
+        <div class="mt-4">
+          <div class="wiz-label">Laufzeit</div>
+          <div class="flex flex-wrap gap-2">
+            <button class="pill" data-group="duration" data-value="bis 12 Monate">bis 12 Monate</button>
+            <button class="pill" data-group="duration" data-value="13–24 Monate" data-selected="true">13–24 Monate</button>
+            <button class="pill" data-group="duration" data-value="25–36 Monate">25–36 Monate</button>
+            <button class="pill" data-group="duration" data-value="über 37 Monate">über 37 Monate</button>
+          </div>
+        </div>
+
+        <div class="mt-8 flex items-center justify-end">
+          <button class="modal-next inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-blue-700 hover:bg-brand-blue-800 text-white font-bold transition">
+            Weiter
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Module -->
+      <div class="modal-step hidden" data-step="2">
+        <div class="flex items-center gap-3">
+          <span class="wiz-step-badge">2</span>
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Schritt 2 von 3</div>
+            <div class="font-display font-bold text-slate-900">Gewünschte Module</div>
+          </div>
+        </div>
+
+        <div class="mt-4 flex flex-wrap gap-2">
+          <button class="pill" data-group="modules" data-value="Planmanagement" data-selected="true">Planmanagement</button>
+          <button class="pill" data-group="modules" data-value="Dokumentenmanagement">Dokumentenmanagement</button>
+          <button class="pill" data-group="modules" data-value="Mängelverfolgung">Mängelverfolgung</button>
+          <button class="pill" data-group="modules" data-value="Bautagebuch">Bautagebuch</button>
+          <button class="pill" data-group="modules" data-value="BIM">BIM</button>
+        </div>
+
+        <div class="mt-5">
+          <div class="wiz-label">Sonstige Hinweise</div>
+          <textarea class="wiz-input min-h-[100px] resize-none leading-relaxed" placeholder="Sonstige benötigte Funktionen / weitere Hinweise zur Angebotserstellung…"></textarea>
+        </div>
+
+        <div class="mt-8 grid grid-cols-2 gap-3">
+          <button class="modal-prev inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            Zurück
+          </button>
+          <button class="modal-next inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-blue-700 hover:bg-brand-blue-800 text-white font-bold transition">
+            Weiter
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Kontakt -->
+      <div class="modal-step hidden" data-step="3">
+        <div class="flex items-center gap-3">
+          <span class="wiz-step-badge">3</span>
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400">Schritt 3 von 3</div>
+            <div class="font-display font-bold text-slate-900">Ihre Kontaktdaten</div>
+          </div>
+        </div>
+
+        <div class="mt-4 grid grid-cols-2 gap-2.5">
+          <input type="text" placeholder="Projektname *" class="wiz-input col-span-2" />
+          <input type="text" placeholder="Firma *" class="wiz-input col-span-2" />
+          <input type="text" placeholder="Ansprechpartner *" class="wiz-input col-span-2" />
+          <input type="text" placeholder="Straße" class="wiz-input col-span-2 sm:col-span-1" />
+          <input type="text" placeholder="Hausnummer *" class="wiz-input col-span-2 sm:col-span-1" />
+          <input type="text" placeholder="PLZ" class="wiz-input col-span-2 sm:col-span-1" />
+          <input type="text" placeholder="Ort *" class="wiz-input col-span-2 sm:col-span-1" />
+          <input type="tel"  placeholder="Telefon *" class="wiz-input col-span-2 sm:col-span-1" />
+          <input type="email" placeholder="E-Mail *" class="wiz-input col-span-2 sm:col-span-1" />
+        </div>
+
+        <label class="mt-5 flex items-start gap-3 cursor-pointer">
+          <input type="checkbox" class="mt-1 w-4 h-4 accent-brand-blue-700 flex-none" />
+          <span class="text-[12.5px] text-slate-500 leading-relaxed">
+            Ich akzeptiere die <a href="#" class="text-brand-blue-700 underline hover:text-brand-blue-800">Bedingungen</a> und erkläre mich damit einverstanden, dass meine Daten zur Bearbeitung meines Anliegens verwendet werden. Weitere Informationen in der <a href="#" class="text-brand-blue-700 underline hover:text-brand-blue-800">Datenschutzerklärung</a>.
+          </span>
+        </label>
+
+        <div class="mt-6 grid grid-cols-2 gap-3">
+          <button class="modal-prev inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+            Zurück
+          </button>
+          <button class="modal-submit inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-brand-blue-700 hover:bg-brand-blue-800 text-white font-bold shadow-navy transition">
+            Verbindliches Angebot anfordern
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Success -->
+      <div class="modal-step hidden text-center py-10" data-step="success">
+        <div class="mx-auto w-16 h-16 rounded-full bg-brand-blue-700 grid place-items-center shadow-navy">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="mt-5 font-display font-extrabold text-2xl text-slate-900">Anfrage erhalten!</div>
+        <p class="mt-2 text-slate-600 max-w-sm mx-auto">Ein Mitglied unseres Sales-Teams meldet sich innerhalb von 24 Stunden mit Ihrem persönlichen Angebot.</p>
+        <button class="mt-7 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold transition" data-close-modal>
+          Schließen
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<script>
+function toggleLang() {
+  const btn = document.getElementById('langToggle');
+  btn.textContent = btn.textContent.trim() === 'DE' ? 'EN' : 'DE';
+}
+
+function toggleTheme() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  document.getElementById('iconSun').classList.toggle('hidden', isDark);
+  document.getElementById('iconMoon').classList.toggle('hidden', !isDark);
+  document.body.style.background = isDark ? '#0f172a' : '#fff';
+  document.body.style.color = isDark ? '#94a3b8' : '#475569';
+}
+</script>
+
+<!-- ================= CHATBOT WIDGET ================= -->
+<style>
+  #chatWidget { position: fixed; bottom: 24px; right: 24px; z-index: 999; display: flex; flex-direction: column; align-items: flex-end; gap: 12px; }
+  #chatWindow {
+    width: 340px; background: #fff; border-radius: 20px;
+    box-shadow: 0 24px 60px -12px rgba(15,23,42,.25), 0 0 0 1px rgba(15,23,42,.06);
+    overflow: hidden; display: flex; flex-direction: column;
+    transform: translateY(12px) scale(.97); opacity: 0;
+    transition: opacity .25s ease, transform .28s cubic-bezier(.2,.8,.3,1);
+    pointer-events: none;
+  }
+  #chatWindow.open { opacity: 1; transform: none; pointer-events: auto; }
+  #chatBtn {
+    width: 54px; height: 54px; border-radius: 999px;
+    background: #18449C; color: #fff;
+    box-shadow: 0 8px 24px -6px rgba(24,68,156,.55);
+    border: none; cursor: pointer;
+    display: grid; place-items: center;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  #chatBtn:hover { transform: scale(1.07); box-shadow: 0 12px 30px -6px rgba(24,68,156,.65); }
+  .chat-chip {
+    display: inline-block; padding: 8px 14px; border-radius: 999px;
+    background: #EEF2F9; color: #18449C;
+    font-size: 13px; font-weight: 600; cursor: pointer;
+    border: 1.5px solid #D6DFEF;
+    transition: background .15s ease, border-color .15s ease;
+  }
+  .chat-chip:hover { background: #D6DFEF; border-color: #A9BEE0; }
+  .chat-msg { font-size: 14px; line-height: 1.55; color: #334155; }
+  .chat-bubble { background: #F1F5F9; border-radius: 4px 16px 16px 16px; padding: 10px 14px; }
+</style>
+
+<div id="chatWidget">
+  <!-- Chat window -->
+  <div id="chatWindow">
+    <!-- Header -->
+    <div class="flex items-center justify-between px-4 py-3.5 bg-brand-blue-700">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-white/20 grid place-items-center flex-none">
+          <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.38 5.07L2 22l5.11-1.35A9.93 9.93 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+        </div>
+        <div>
+          <div class="text-white font-semibold text-sm leading-tight">NetzWerkPlan Assistent</div>
+          <div class="flex items-center gap-1 mt-0.5">
+            <span class="w-1.5 h-1.5 rounded-full bg-green-400 inline-block"></span>
+            <span class="text-white/60 text-[11px]">Online</span>
+          </div>
+        </div>
+      </div>
+      <button onclick="toggleChat()" class="w-7 h-7 rounded-lg grid place-items-center text-white/60 hover:text-white hover:bg-white/10 transition">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div class="flex-1 p-4 space-y-4 overflow-y-auto" style="max-height:320px">
+      <!-- Bot greeting -->
+      <div class="flex items-start gap-2.5">
+        <div class="w-7 h-7 rounded-full bg-brand-blue-100 text-brand-blue-700 grid place-items-center flex-none text-xs font-bold">N</div>
+        <div class="space-y-2 flex-1">
+          <div class="chat-bubble chat-msg">
+            Hallo! Schön, dass Sie bei <strong>NetzWerkPlan</strong> vorbeischauen. Wie kann ich Ihnen helfen?
+          </div>
+          <div class="chat-bubble chat-msg">
+            Ich beantworte Fragen zu unseren Produkten, zeige Ihnen Demo-Möglichkeiten oder verbinde Sie mit unserem Team.
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick replies -->
+      <div class="space-y-2 pl-9">
+        <div class="text-[11.5px] font-semibold text-slate-400 uppercase tracking-wide">Schnellauswahl</div>
+        <div class="flex flex-wrap gap-2">
+          <button class="chat-chip" onclick="chatReply(this)">Live-Demo buchen</button>
+          <button class="chat-chip" onclick="chatReply(this)">Preise anfragen</button>
+          <button class="chat-chip" onclick="chatReply(this)">winplan 2.0 erklärt</button>
+          <button class="chat-chip" onclick="chatReply(this)">Was ist CDE?</button>
+          <button class="chat-chip" onclick="chatReply(this)">Technischer Support</button>
+          <button class="chat-chip" onclick="chatReply(this)">BIM-Viewer testen</button>
+        </div>
+      </div>
+
+      <!-- Reply area (filled dynamically) -->
+      <div id="chatReplies" class="space-y-3"></div>
+    </div>
+
+    <!-- Input -->
+    <div class="p-3 border-t border-slate-100 flex items-center gap-2">
+      <input id="chatInput" type="text" placeholder="Nachricht schreiben …"
+        class="flex-1 text-sm px-3 py-2 rounded-lg bg-slate-50 border border-slate-200 focus:outline-none focus:border-brand-blue-300 focus:ring-2 focus:ring-brand-blue-100 text-slate-700 placeholder:text-slate-400"
+        onkeydown="if(event.key==='Enter')sendChat()" />
+      <button onclick="sendChat()" class="w-8 h-8 rounded-lg bg-brand-blue-700 hover:bg-brand-blue-800 text-white grid place-items-center transition flex-none">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- Trigger button -->
+  <button id="chatBtn" onclick="toggleChat()" aria-label="Chat öffnen">
+    <svg id="chatIconOpen" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+    <svg id="chatIconClose" class="w-5 h-5 hidden" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+</div>
+
+<script>
+function toggleChat() {
+  const win = document.getElementById('chatWindow');
+  const open = document.getElementById('chatIconOpen');
+  const close = document.getElementById('chatIconClose');
+  win.classList.toggle('open');
+  open.classList.toggle('hidden', win.classList.contains('open'));
+  close.classList.toggle('hidden', !win.classList.contains('open'));
+}
+
+const autoReplies = {
+  'Live-Demo buchen': 'Super! Ich leite Sie direkt zur Demo-Buchung weiter. Wählen Sie einen Wunschtermin — unser Team meldet sich innerhalb von 24 Stunden.',
+  'Preise anfragen': 'Gerne erstellen wir Ihnen ein individuelles Angebot. Schreiben Sie kurz Ihre Projektgröße und Teamanzahl, oder klicken Sie auf „Angebot erhalten" oben im Menü.',
+  'winplan 2.0 erklärt': 'winplan 2.0 ist unser cloudbasierter Projektraum für das Büro — zentrales Planmanagement, automatisierte Workflows und 2D-Viewer. Spart bis zu 30 % Bearbeitungszeit.',
+  'Was ist CDE?': 'CDE steht für Common Data Environment — eine zentrale Plattform für alle Projektbeteiligten. NetzWerkPlan ist ISO 27001 zertifiziert und hosted in Deutschland.',
+  'Technischer Support': 'Unser Support-Team ist Mo–Fr 8–17 Uhr erreichbar. Sie finden Schnelleinstieg & Schulungsvideos unter dem Menüpunkt „Service".',
+  'BIM-Viewer testen': 'bimplan ermöglicht 3D-Modelle direkt im Browser — inkl. Open BIM (IFC) und automatischer Kollisionsprüfung. Soll ich eine Demo-Umgebung für Sie vorbereiten?',
+};
+
+function chatReply(btn) {
+  const text = btn.textContent.trim();
+  const container = document.getElementById('chatReplies');
+  const reply = autoReplies[text] || 'Danke für Ihre Anfrage! Ein Mitarbeiter meldet sich in Kürze.';
+  container.innerHTML += `
+    <div class="flex justify-end"><div class="bg-brand-blue-700 text-white text-sm px-3.5 py-2 rounded-2xl rounded-br-sm max-w-[80%]">${text}</div></div>
+    <div class="flex items-start gap-2.5">
+      <div class="w-7 h-7 rounded-full bg-brand-blue-100 text-brand-blue-700 grid place-items-center flex-none text-xs font-bold">N</div>
+      <div class="chat-bubble chat-msg flex-1">${reply}</div>
+    </div>`;
+  container.parentElement.scrollTop = container.parentElement.scrollHeight;
+}
+
+function sendChat() {
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if (!text) return;
+  const container = document.getElementById('chatReplies');
+  container.innerHTML += `<div class="flex justify-end"><div class="bg-brand-blue-700 text-white text-sm px-3.5 py-2 rounded-2xl rounded-br-sm max-w-[80%]">${text}</div></div>
+    <div class="flex items-start gap-2.5">
+      <div class="w-7 h-7 rounded-full bg-brand-blue-100 text-brand-blue-700 grid place-items-center flex-none text-xs font-bold">N</div>
+      <div class="chat-bubble chat-msg flex-1">Danke für Ihre Nachricht! Unser Team meldet sich schnellstmöglich. Alternativ erreichen Sie uns direkt über das Kontaktformular.</div>
+    </div>`;
+  input.value = '';
+  container.parentElement.scrollTop = container.parentElement.scrollHeight;
+}
+</script>
+
+</body>
+</html>

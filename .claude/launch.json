@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "netzwerkplan",
+      "runtimeExecutable": "C:\\Users\\eeraj\\AppData\\Roaming\\npm\\npx.cmd",
+      "runtimeArgs": ["serve", "-p", "3456", "."],
+      "port": 3456
+    }
+  ]
+}
