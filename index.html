@@ -571,9 +571,9 @@
   #testi .t-track { display:flex !important; gap:28px; padding:72px 0 36px; transition:transform .55s cubic-bezier(.4,0,.2,1); }
   #testi .t-logo { max-height:46px; max-width:140px; width:auto; object-fit:contain; flex-shrink:0; }
   /* Slides — warm tint, blue border */
-  #testi .t-slide { flex-shrink:0; width:520px; background:#fff !important; border-radius:20px; border:2px solid rgba(55,102,197,.28); padding:56px 32px 32px; display:flex !important; flex-direction:column !important; transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .5s ease,border-color .3s ease,box-shadow .3s ease; opacity:.45; transform:scale(.92); cursor:pointer; position:relative; overflow:visible; }
-  #testi .t-slide.active { opacity:1 !important; transform:scale(1) !important; cursor:default; border-color:rgba(55,102,197,.6) !important; box-shadow:0 4px 28px rgba(15,45,107,.12), inset 0 4px 0 #D9B500; }
-  #testi .t-slide.active:hover { border-color:rgba(55,102,197,.8) !important; box-shadow:inset 4px 4px 22px rgba(255,255,255,.7), inset 0 4px 0 #D9B500, 0 12px 40px rgba(15,45,107,.18) !important; transform:scale(1.03) !important; }
+  #testi .t-slide { flex-shrink:0; width:380px; background:#fff !important; border-radius:20px; border:2px solid rgba(55,102,197,.28); padding:44px 28px 28px; display:flex !important; flex-direction:column !important; transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .5s ease,border-color .3s ease,box-shadow .3s ease; opacity:.45; transform:scale(.92); cursor:pointer; position:relative; overflow:visible; }
+  #testi .t-slide.active { opacity:1 !important; transform:scale(1) !important; cursor:default; border-color:rgba(55,102,197,.6) !important; box-shadow:0 4px 28px rgba(15,45,107,.12), inset 0 4px 0 #3766C5; }
+  #testi .t-slide.active:hover { border-color:rgba(55,102,197,.8) !important; box-shadow:inset 4px 4px 22px rgba(255,255,255,.7), inset 0 4px 0 #3766C5, 0 12px 40px rgba(15,45,107,.18) !important; transform:scale(1.03) !important; }
   /* Shine overlay � diagonal light sweep on hover */
   #testi .t-slide::before { content:''; position:absolute; inset:0; border-radius:18px; background:linear-gradient(135deg, rgba(255,255,255,.55) 0%, rgba(255,255,255,.18) 35%, rgba(255,255,255,0) 60%); opacity:0; transition:opacity .4s ease; pointer-events:none; z-index:1; }
   #testi .t-slide.active:hover::before { opacity:1; }
@@ -583,7 +583,7 @@
   #testi .t-slide.active > svg { opacity:1; }
   #testi .t-slide.adj > svg { opacity:0; }
   #testi .t-quote { margin:20px 0 0; flex:1; color:#334155 !important; font-size:16px; line-height:1.78; }
-  #testi .t-foot { margin-top:28px; padding-top:20px; border-top:2px solid rgba(217,181,0,.3); display:flex !important; align-items:center; gap:14px; }
+  #testi .t-foot { margin-top:28px; padding-top:20px; border-top:2px solid rgba(55,102,197,.3); display:flex !important; align-items:center; gap:14px; }
   #testi .t-avatar { width:42px !important; height:42px !important; border-radius:50%; color:#fff; display:flex !important; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; font-family:'Plus Jakarta Sans',Inter,sans-serif; }
   #testi .t-name { font-weight:700; color:#0F2D6B !important; font-size:14px; line-height:1.35; }
   #testi .t-role { font-size:12.5px; color:#94a3b8 !important; margin-top:3px; }
@@ -595,16 +595,16 @@
   #testi .t-overflow { isolation:isolate; }
   #testi .t-dots { display:flex; gap:8px; align-items:center; }
   #testi .t-dot { width:8px; height:8px; border-radius:999px; background:rgba(55,102,197,.2); border:none; padding:0; cursor:pointer; transition:background .25s ease,width .25s ease; }
-  #testi .t-dot.active { background:#D9B500; width:24px; }
+  #testi .t-dot.active { background:#3766C5; width:24px; }
   #testi .t-glow1 { display:none; }
   #testi .t-glow2 { display:none; }
   @media (max-width:900px) {
-    #testi .t-slide { width:min(440px,calc(100vw - 120px)); padding:48px 28px 28px; }
+    #testi .t-slide { width:min(360px,calc(100vw - 120px)); padding:44px 26px 26px; }
     #testi .t-overflow::before, #testi .t-overflow::after { width:80px; }
   }
   @media (max-width:580px) {
     #testi { touch-action: pan-y; }
-    #testi .t-slide { width:calc(100vw - 80px); padding:48px 20px 20px; }
+    #testi .t-slide { width:calc(100vw - 80px); padding:44px 20px 20px; }
     #testi .t-overflow::before, #testi .t-overflow::after { width:32px; }
     #testi .t-quote { font-size:15px; }
     #testi .t-arrow { display: none !important; }
@@ -1551,7 +1551,7 @@
 
         <!-- 1: Anna Lupinski – HSP7 -->
         <div class="t-slide active">
-          <svg width="30" height="24" viewBox="0 0 30 24" fill="#D9B500"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
           <div class="t-quote">„winplan ist für uns als Bauträger eine große Hilfe, da alle Planer Zugriff haben und jeder auf dem aktuellsten Stand der Grundrisse, Pläne und Protokolle ist."</div>
           <div class="t-foot">
             <img src="assets/logos/hsp7-dark.svg" class="t-logo" alt="HSP7">
@@ -1561,7 +1561,7 @@
 
         <!-- 2: Norbert Uhlir – kein Logo -->
         <div class="t-slide">
-          <svg width="30" height="24" viewBox="0 0 30 24" fill="#D9B500"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
           <div class="t-quote">„Ohne das Programm winplan wäre unser Alltag im Büro nicht mehr vorstellbar und viel komplizierter."</div>
           <div class="t-foot">
             <img src="assets/logos/planbau.png" alt="PlanBau" style="max-height:34px;max-width:110px;object-fit:contain;flex-shrink:0;">
@@ -1571,7 +1571,7 @@
 
         <!-- 3: Beteiligter – Südhausbau -->
         <div class="t-slide">
-          <svg width="30" height="24" viewBox="0 0 30 24" fill="#D9B500"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
           <div class="t-quote">„In winplan finde ich unsere eigenen Pläne und Dokumente schneller als auf dem heimischen Server."</div>
           <div class="t-foot">
             <img src="assets/logos/suedhausbau.svg" class="t-logo" alt="Südhausbau">
@@ -1581,7 +1581,7 @@
 
         <!-- 4: Franz Fischer – BRK -->
         <div class="t-slide">
-          <svg width="30" height="24" viewBox="0 0 30 24" fill="#D9B500"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
           <div class="t-quote">„Vielen Dank für den guten Support und die hervorragende Zusammenarbeit. Das Portal hat uns viel Zeit und Arbeit gespart."</div>
           <div class="t-foot">
             <img src="assets/logos/brk.svg" class="t-logo" alt="BRK" style="max-width:80px;">
@@ -1591,7 +1591,7 @@
 
         <!-- 5: Stefan Kamphausen – Stadtwerke Düsseldorf -->
         <div class="t-slide">
-          <svg width="30" height="24" viewBox="0 0 30 24" fill="#D9B500"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
           <div class="t-quote">„Die Anwendung unterstützt uns in unserem Top-Projekt zum Neubau eines Trinkwasserspeichers. Der Support durch NetzWerkPlan ist stets vorbildlich."</div>
           <div class="t-foot">
             <img src="assets/logos/stadtwerke.svg" class="t-logo" alt="Stadtwerke Düsseldorf">
@@ -1601,7 +1601,7 @@
 
         <!-- 6: Hans-Peter Böck – kein Logo -->
         <div class="t-slide">
-          <svg width="30" height="24" viewBox="0 0 30 24" fill="#D9B500"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
           <div class="t-quote">„Wir nutzen winplan seit Jahrzehnten. Die Software hat uns maßgeblich in der Struktur und Nachvollziehbarkeit des Planversandes unterstützt – egal wie umfangreich das Projekt."</div>
           <div class="t-foot">
             <div class="t-avatar" style="background:#3766C5;">HB</div>
@@ -1611,7 +1611,7 @@
 
         <!-- 7: Raphael Lieser – CUBIC (kein Logo) -->
         <div class="t-slide">
-          <svg width="30" height="24" viewBox="0 0 30 24" fill="#D9B500"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
           <div class="t-quote">„Eine absolut intelligente, komplexe und dennoch einfach zu handhabende Lösung. Die automatisierten Workflows machen die Freigabe wesentlich übersichtlicher."</div>
           <div class="t-foot">
             <div class="t-avatar" style="background:#3766C5;">RL</div>
@@ -1621,7 +1621,7 @@
 
         <!-- 8: Sandra Gärtner – kein Logo -->
         <div class="t-slide">
-          <svg width="30" height="24" viewBox="0 0 30 24" fill="#D9B500"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+          <svg width="30" height="24" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
           <div class="t-quote">„Die Investition amortisiert sich durch automatische Dokumentation, Zeitersparnisse und glückliche Auftraggeber schon im ersten Jahr."</div>
           <div class="t-foot">
             <div class="t-avatar" style="background:#3766C5;">SG</div>
