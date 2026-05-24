@@ -830,6 +830,28 @@
   .mob-link { display:block; padding:8px 12px; border-radius:8px; color:rgba(255,255,255,.7); font-size:13px; transition:background .15s ease, color .15s ease; touch-action:manipulation; }
   .mob-link:hover, .mob-link:active { background:rgba(255,255,255,.08); color:#fff; }
   .mob-sec-btn:active { background:rgba(255,255,255,.05); border-radius:8px; }
+
+  /* ── About slider: mobile connected card ── */
+  @media (max-width: 1023px) {
+    .slide {
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+      border: 2px solid #A9BEE0;
+      row-gap: 0 !important;
+      box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 8px 24px -8px rgba(15,23,42,.10);
+    }
+    .slide > div:first-child {
+      border-radius: 0 !important;
+    }
+    .about-card {
+      border-radius: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+      border-top: 1px solid rgba(169,190,224,0.35) !important;
+      background: #fff !important;
+    }
+  }
 </style>
 
 <!-- ================= SECTION 2: HERO (light theme) ================= -->
@@ -1069,6 +1091,29 @@
         </div>
       </div>
 
+      <!-- Mobile: dots + arrows ABOVE video (so user sees it's a slider) -->
+      <div class="flex lg:hidden items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <button class="dot group touch-manipulation" data-dot="0" aria-label="Slide 1">
+            <span class="block w-10 h-1.5 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
+          </button>
+          <button class="dot group touch-manipulation" data-dot="1" aria-label="Slide 2">
+            <span class="block w-10 h-1.5 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
+          </button>
+          <button class="dot group touch-manipulation" data-dot="2" aria-label="Slide 3">
+            <span class="block w-10 h-1.5 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
+          </button>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="slideNav prev w-9 h-9 rounded-full bg-white ring-1 ring-slate-200 text-slate-600 grid place-items-center touch-manipulation" aria-label="Vorherige Slide">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="slideNav next w-9 h-9 rounded-full bg-brand-blue-700 text-white grid place-items-center touch-manipulation" aria-label="Nächste Slide">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+        </div>
+      </div>
+
       <!-- Track -->
       <div class="overflow-hidden rounded-3xl">
         <div id="slideTrack" class="flex transition-transform duration-700 ease-[cubic-bezier(.5,.1,.25,1)]" style="transform: translateX(0)">
@@ -1186,28 +1231,17 @@
         </div>
       </div>
 
-      <!-- Dots + mobile arrows -->
-      <div class="mt-8 flex items-center justify-between">
-        <div class="flex items-center gap-2">
-          <button class="dot group" data-dot="0" aria-label="Slide 1">
-            <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
-          </button>
-          <button class="dot group" data-dot="1" aria-label="Slide 2">
-            <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
-          </button>
-          <button class="dot group" data-dot="2" aria-label="Slide 3">
-            <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
-          </button>
-        </div>
-        <!-- mobile arrows -->
-        <div class="flex md:hidden gap-2">
-          <button class="slideNav prev w-10 h-10 rounded-full bg-white ring-1 ring-slate-200 text-slate-600 grid place-items-center" aria-label="Vorherige Slide">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <button class="slideNav next w-10 h-10 rounded-full bg-brand-blue-700 text-white grid place-items-center" aria-label="Nächste Slide">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
+      <!-- Desktop dots (hidden on mobile — mobile has dots above video) -->
+      <div class="mt-8 hidden lg:flex items-center gap-2">
+        <button class="dot group touch-manipulation" data-dot="0" aria-label="Slide 1">
+          <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
+        </button>
+        <button class="dot group touch-manipulation" data-dot="1" aria-label="Slide 2">
+          <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
+        </button>
+        <button class="dot group touch-manipulation" data-dot="2" aria-label="Slide 3">
+          <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
+        </button>
       </div>
 
     </div>
@@ -2099,7 +2133,7 @@
     idx = (n + slides.length) % slides.length;
     track.style.transform = `translateX(-${idx * 100}%)`;
     counter.textContent = String(idx + 1).padStart(2, '0');
-    dots.forEach((d, i) => d.setAttribute('data-active', i === idx ? 'true' : 'false'));
+    dots.forEach(d => d.setAttribute('data-active', parseInt(d.dataset.dot) === idx ? 'true' : 'false'));
     // Pause all others, play active
     videos.forEach((v, i) => {
       if (i === idx) {
@@ -2115,7 +2149,7 @@
 
   prevBtns.forEach(b => b.addEventListener('click', () => go(idx - 1)));
   nextBtns.forEach(b => b.addEventListener('click', () => go(idx + 1)));
-  dots.forEach((d, i) => d.addEventListener('click', () => go(i)));
+  dots.forEach(d => d.addEventListener('click', () => go(parseInt(d.dataset.dot))));
 
   // Tap play button toggles play/pause for current video
   // IMPORTANT: call v.play() synchronously here — async call loses iOS user-gesture context
