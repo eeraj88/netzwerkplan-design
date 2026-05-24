@@ -568,7 +568,7 @@
   #testi .t-overflow::before, #testi .t-overflow::after { content:''; position:absolute; top:0; bottom:0; width:200px; z-index:3; pointer-events:none; }
   #testi .t-overflow::before { left:0; background:linear-gradient(to right,#F6F9FC 15%,transparent); }
   #testi .t-overflow::after  { right:0; background:linear-gradient(to left,#F6F9FC 15%,transparent); }
-  #testi .t-track { display:flex !important; gap:28px; will-change:transform; padding:72px 0 36px; transition:transform .55s cubic-bezier(.4,0,.2,1); }
+  #testi .t-track { display:flex !important; gap:28px; padding:72px 0 36px; transition:transform .55s cubic-bezier(.4,0,.2,1); }
   #testi .t-logo { max-height:46px; max-width:140px; width:auto; object-fit:contain; flex-shrink:0; }
   /* Slides — warm tint, blue border */
   #testi .t-slide { flex-shrink:0; width:520px; background:#fff !important; border-radius:20px; border:2px solid rgba(55,102,197,.28); padding:56px 32px 32px; display:flex !important; flex-direction:column !important; transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .5s ease,border-color .3s ease,box-shadow .3s ease; opacity:.45; transform:scale(.92); cursor:pointer; position:relative; overflow:visible; }
@@ -587,7 +587,7 @@
   #testi .t-avatar { width:42px !important; height:42px !important; border-radius:50%; color:#fff; display:flex !important; align-items:center; justify-content:center; font-weight:700; font-size:13px; flex-shrink:0; font-family:'Plus Jakarta Sans',Inter,sans-serif; }
   #testi .t-name { font-weight:700; color:#0F2D6B !important; font-size:14px; line-height:1.35; }
   #testi .t-role { font-size:12.5px; color:#94a3b8 !important; margin-top:3px; }
-  #testi .t-nav { display:flex !important; align-items:center; justify-content:center; gap:20px; margin-top:32px; position:relative; z-index:10; }
+  #testi .t-nav { display:flex !important; align-items:center; justify-content:center; gap:20px; margin-top:32px; position:relative; z-index:50; isolation:isolate; }
   #testi .t-arrow { width:52px; height:52px; border-radius:50%; border:2px solid #18449C; background:#18449C; color:#fff; display:flex !important; align-items:center; justify-content:center; cursor:pointer; transition:background .2s ease,border-color .2s ease,transform .15s ease; flex-shrink:0; box-shadow:0 4px 16px rgba(15,45,107,.25); pointer-events:auto !important; touch-action:manipulation; -webkit-tap-highlight-color:rgba(0,0,0,.1); }
   #testi .t-arrow:hover:not([disabled]) { background:#0F2D6B; border-color:#0F2D6B; transform:scale(1.08); }
   #testi .t-arrow[disabled] { opacity:.25; cursor:default; pointer-events:none !important; }
@@ -606,6 +606,27 @@
     #testi .t-slide { width:calc(100vw - 80px); padding:48px 20px 20px; }
     #testi .t-overflow::before, #testi .t-overflow::after { width:32px; }
     #testi .t-quote { font-size:15px; }
+  }
+
+  /* Mobile: Video + Content als eine Einheit */
+  @media (max-width:1023px) {
+    #aboutSlider .slide {
+      background: #fff;
+      border-radius: 24px;
+      border: 2px solid #DBEAFE;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(30, 58, 138, 0.08);
+    }
+    #aboutSlider .slide-video {
+      border-radius: 22px 22px 0 0 !important;
+      min-height: 200px;
+    }
+    #aboutSlider .about-card {
+      border: none !important;
+      box-shadow: none !important;
+      border-radius: 0 0 22px 22px !important;
+      padding: 20px 20px 24px !important;
+    }
   }
 </style>
 </head>
@@ -756,7 +777,7 @@
       </div><!-- end ml-auto wrapper -->
 
       <!-- Mobile burger — ml-auto pushes it to far right -->
-      <button id="mobBurger" class="ml-auto lg:hidden w-10 h-10 grid place-items-center rounded-lg hover:bg-white/10 touch-manipulation" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobMenu">
+      <button id="mobBurger" class="ml-auto lg:hidden w-10 h-10 grid place-items-center rounded-lg hover:bg-white/10 style="touch-action: manipulation"" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobMenu">
         <svg id="burgerIcon" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         <svg id="burgerClose" class="w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
@@ -768,7 +789,7 @@
 
         <!-- Lösungen -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-loesungen">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation"" data-target="mob-loesungen">
             Lösungen
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -789,7 +810,7 @@
 
         <!-- Use Cases -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-usecases">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation"" data-target="mob-usecases">
             Use Cases
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -806,7 +827,7 @@
 
         <!-- Über uns -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-ueber">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation"" data-target="mob-ueber">
             Über uns
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -821,7 +842,7 @@
 
         <!-- Kunden -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-kunden">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation"" data-target="mob-kunden">
             Kunden
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -834,7 +855,7 @@
 
         <!-- Service -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-service">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation"" data-target="mob-service">
             Service
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -850,21 +871,21 @@
 
         <!-- Kontakt -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-kontakt">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation"" data-target="mob-kontakt">
             Kontakt
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div id="mob-kontakt" class="mob-items hidden pl-2 pb-2 space-y-0.5">
-            <button data-open-modal="demoModal" class="mob-link w-full text-left touch-manipulation">Live-Demo / Präsentation</button>
-            <button data-open-modal="offerModal" class="mob-link w-full text-left touch-manipulation">Individuelles Angebot</button>
+            <button data-open-modal="demoModal" class="mob-link w-full text-left style="touch-action: manipulation"">Live-Demo / Präsentation</button>
+            <button data-open-modal="offerModal" class="mob-link w-full text-left style="touch-action: manipulation"">Individuelles Angebot</button>
             <a href="#cta" class="mob-link">Kontaktformular</a>
           </div>
         </div>
 
         <!-- CTA buttons -->
         <div class="grid grid-cols-2 gap-2 pt-4 pb-2">
-          <button data-open-modal="offerModal" class="px-4 py-3 rounded-xl border border-white/40 text-white text-sm font-semibold text-center touch-manipulation">Angebot</button>
-          <button data-open-modal="demoModal" class="px-4 py-3 rounded-xl bg-brand-gold-500 text-brand-blue-900 text-sm font-bold text-center touch-manipulation">Live-Demo</button>
+          <button data-open-modal="offerModal" class="px-4 py-3 rounded-xl border border-white/40 text-white text-sm font-semibold text-center style="touch-action: manipulation"">Angebot</button>
+          <button data-open-modal="demoModal" class="px-4 py-3 rounded-xl bg-brand-gold-500 text-brand-blue-900 text-sm font-bold text-center style="touch-action: manipulation"">Live-Demo</button>
         </div>
 
       </div>
@@ -1140,21 +1161,21 @@
       <!-- Mobile: dots + arrows ABOVE video (so user sees it's a slider) -->
       <div class="flex lg:hidden items-center justify-between mb-4">
         <div class="flex items-center gap-2">
-          <button class="dot group touch-manipulation" data-dot="0" aria-label="Slide 1">
+          <button class="dot group style="touch-action: manipulation"" data-dot="0" aria-label="Slide 1">
             <span class="block w-10 h-1.5 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
           </button>
-          <button class="dot group touch-manipulation" data-dot="1" aria-label="Slide 2">
+          <button class="dot group style="touch-action: manipulation"" data-dot="1" aria-label="Slide 2">
             <span class="block w-10 h-1.5 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
           </button>
-          <button class="dot group touch-manipulation" data-dot="2" aria-label="Slide 3">
+          <button class="dot group style="touch-action: manipulation"" data-dot="2" aria-label="Slide 3">
             <span class="block w-10 h-1.5 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
           </button>
         </div>
         <div class="flex items-center gap-2">
-          <button class="slideNav prev w-9 h-9 rounded-full bg-white ring-1 ring-slate-200 text-slate-600 grid place-items-center touch-manipulation" aria-label="Vorherige Slide">
+          <button class="slideNav prev w-9 h-9 rounded-full bg-white ring-1 ring-slate-200 text-slate-600 grid place-items-center style="touch-action: manipulation"" aria-label="Vorherige Slide">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
           </button>
-          <button class="slideNav next w-9 h-9 rounded-full bg-brand-blue-700 text-white grid place-items-center touch-manipulation" aria-label="Nächste Slide">
+          <button class="slideNav next w-9 h-9 rounded-full bg-brand-blue-700 text-white grid place-items-center style="touch-action: manipulation"" aria-label="Nächste Slide">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
           </button>
         </div>
@@ -1279,13 +1300,13 @@
 
       <!-- Desktop dots (hidden on mobile — mobile has dots above video) -->
       <div class="mt-8 hidden lg:flex items-center gap-2">
-        <button class="dot group touch-manipulation" data-dot="0" aria-label="Slide 1">
+        <button class="dot group style="touch-action: manipulation"" data-dot="0" aria-label="Slide 1">
           <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
         </button>
-        <button class="dot group touch-manipulation" data-dot="1" aria-label="Slide 2">
+        <button class="dot group style="touch-action: manipulation"" data-dot="1" aria-label="Slide 2">
           <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
         </button>
-        <button class="dot group touch-manipulation" data-dot="2" aria-label="Slide 3">
+        <button class="dot group style="touch-action: manipulation"" data-dot="2" aria-label="Slide 3">
           <span class="block w-10 h-1 rounded-full bg-slate-300 group-data-[active=true]:bg-brand-blue-700 transition-colors"></span>
         </button>
       </div>
@@ -1658,22 +1679,21 @@
       next.disabled = cur === total - 1;
     }
 
-    // Navigation: touchend (primary on iOS) + click (desktop fallback)
+    // Navigation: touchstart (primary on iOS — fires before scroll decision) + click (desktop)
     function navBtn(el, dir) {
       var fired = false;
-      el.addEventListener('touchend', function(e) {
-        if (el.disabled) return;
-        e.preventDefault(); // prevent ghost click
+      function act() {
+        if (el.disabled || fired) return;
         fired = true;
         go(cur + dir);
         startAuto();
         setTimeout(function(){ fired = false; }, 400);
+      }
+      el.addEventListener('touchstart', function(e) {
+        e.preventDefault(); // block ghost click + prevent accidental scroll
+        act();
       }, { passive: false });
-      el.addEventListener('click', function() {
-        if (el.disabled || fired) return;
-        go(cur + dir);
-        startAuto();
-      });
+      el.addEventListener('click', act);
     }
     navBtn(prev, -1);
     navBtn(next, 1);
@@ -1915,6 +1935,9 @@
 </script>
 
 <script>
+// ── iOS: register document as touch-capable so click fires on ALL elements ──
+document.addEventListener('touchstart', function(){}, {passive: true});
+
 /* ============ Sticky nav shadow ============ */
 (() => {
   const nav = document.getElementById('navbar');
@@ -2052,7 +2075,18 @@
   };
 
   document.querySelectorAll('[data-open-modal]').forEach(btn => {
-    btn.addEventListener('click', () => openModal(btn.dataset.openModal));
+    // iOS: use touchend with proper handling (no preventDefault, stopPropagation instead)
+    const handleOpen = (e) => {
+      if (e.type === 'touchend') {
+        e.stopPropagation();
+        // Small delay to avoid double-trigger with click
+        setTimeout(() => openModal(btn.dataset.openModal), 50);
+      } else {
+        openModal(btn.dataset.openModal);
+      }
+    };
+    btn.addEventListener('click', handleOpen);
+    btn.addEventListener('touchend', handleOpen, { passive: true });
   });
   // Close: use event delegation so it works regardless of element nesting/timing
   document.addEventListener('click', (e) => {
@@ -2144,7 +2178,14 @@
       }
     });
   }
-  tabs.forEach(t => t.addEventListener('click', () => show(t.dataset.tab)));
+  tabs.forEach(t => {
+    t.addEventListener('click', () => show(t.dataset.tab));
+    // iOS parallel handler
+    t.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      show(t.dataset.tab);
+    }, { passive: false });
+  });
   show('cde-bim');
 })();
 
@@ -2214,18 +2255,34 @@
   dots.forEach(d => d.addEventListener('click', () => go(parseInt(d.dataset.dot))));
 
   // Tap play button toggles play/pause for current video
-  // IMPORTANT: call v.play() synchronously here — async call loses iOS user-gesture context
+  // iOS: add touchstart with explicit user gesture handling
   slider.querySelectorAll('.video-play-btn').forEach((btn, i) => {
-    btn.addEventListener('click', (e) => {
+    const togglePlay = (e) => {
+      e.preventDefault();
       e.stopPropagation();
       ensureVideoSrc(i);
       const v = videos[i];
       if (v.paused) {
-        v.play().catch(() => {});
+        const p = v.play();
+        if (p && p.catch) {
+          p.catch((err) => {
+            if (err.name === 'NotAllowedError') {
+              // iOS blocked — show tap hint
+              if (btn.querySelector('.tap-hint')) return;
+              const hint = document.createElement('div');
+              hint.className = 'tap-hint absolute inset-0 grid place-items-center bg-black/20 rounded-full';
+              hint.innerHTML = '<span class="text-white text-xs font-bold">Tippe erneut</span>';
+              btn.appendChild(hint);
+              setTimeout(() => hint.remove(), 2000);
+            }
+          });
+        }
       } else {
         v.pause();
       }
-    });
+    };
+    btn.addEventListener('click', togglePlay);
+    btn.addEventListener('touchend', togglePlay, { passive: false });
   });
 
   // Hide play-icon when video plays, show when paused
