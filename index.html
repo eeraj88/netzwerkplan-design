@@ -2072,14 +2072,26 @@
   }
 
   function tryPlay(v) {
-    const attempt = () => v.play().catch(() => {});
+    const attempt = () => {
+      const p = v.play();
+      if (p && p.catch) {
+        p.catch((err) => {
+          if (err.name === 'NotAllowedError') {
+            // iOS blocked autoplay — retry on first real user gesture
+            const retry = () => { v.play().catch(() => {}); };
+            document.addEventListener('touchstart', retry, { once: true, passive: true });
+            document.addEventListener('click',      retry, { once: true });
+          }
+        });
+      }
+    };
     if (v.readyState >= 2) { attempt(); return; }
     let done = false;
     const fire = () => { if (done) return; done = true; attempt(); };
     v.addEventListener('loadeddata', fire, { once: true });
     v.addEventListener('canplay',    fire, { once: true });
-    // iOS fallback: if neither fires within 2s, try anyway
-    setTimeout(fire, 2000);
+    // Fallback: if neither event fires within 4s, attempt anyway
+    setTimeout(fire, 4000);
   }
 
   function go(n) {
@@ -2110,7 +2122,7 @@
       e.stopPropagation();
       ensureVideoSrc(i);
       const v = videos[i];
-      if (v.paused) v.play().catch(() => {}); else v.pause();
+      if (v.paused) tryPlay(v); else v.pause();
     });
   });
 
@@ -2140,6 +2152,14 @@
 
   // Init
   go(0);
+
+  // Retry play when slider scrolls into view (user has scrolled = gesture unlocked)
+  new IntersectionObserver((entries) => {
+    if (entries[0].isIntersecting) {
+      const v = videos[idx];
+      if (v && v.src && v.paused) tryPlay(v);
+    }
+  }, { threshold: 0.4 }).observe(slider);
 
   // Auto-advance: pauses when mouse is inside slider, resets on manual nav
   let autoTimer;
