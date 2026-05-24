@@ -476,7 +476,7 @@
   .eco-tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   @media (max-width: 1023px) {
     /* Tabs: 3×2 grid */
-    .eco-tab-scroll { overflow-x: visible; }
+    .eco-tab-scroll { overflow: visible !important; }
     .eco-tab-scroll > [role="tablist"] {
       display: grid !important;
       grid-template-columns: repeat(3, 1fr) !important;
@@ -513,9 +513,9 @@
     }
     .eco-logo-card {
       aspect-ratio: 5/2 !important;
-      padding: 14px !important;
+      padding: 10px !important;
     }
-    .eco-logo { max-height: 48px !important; }
+    .eco-logo { max-height: 32px !important; }
     .eco-chip { padding: 5px 9px !important; font-size: 11px !important; }
   }
   /* About cards hover */
