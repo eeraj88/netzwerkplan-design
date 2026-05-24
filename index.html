@@ -709,63 +709,128 @@
       </div>
       </div><!-- end ml-auto wrapper -->
 
-      <!-- Mobile burger -->
-      <button id="mobBurger" class="lg:hidden w-10 h-10 grid place-items-center rounded-lg hover:bg-white/10">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      <!-- Mobile burger — ml-auto pushes it to far right -->
+      <button id="mobBurger" class="ml-auto lg:hidden w-10 h-10 grid place-items-center rounded-lg hover:bg-white/10 touch-manipulation" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobMenu">
+        <svg id="burgerIcon" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg id="burgerClose" class="w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
 
-    <!-- Mobile menu -->
-    <div id="mobMenu" class="lg:hidden hidden pb-5 border-t border-white/10 pt-4">
-      <div class="grid gap-0 text-[15px]">
-        <div class="py-2 text-white font-semibold">Lösungen</div>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Projektraum winplan 2.0</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">winplan 2.0 App</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">BIM-CDE bimplan</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">BIM-CDE wpsquirrel</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Bautagebuch</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Protokollmanagement</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Mängelmanagement</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">2D-Viewer</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Sicherheit</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">QR-Code</a>
-        <div class="py-2 mt-2 text-white font-semibold">Use Cases</div>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Projektraum Bau</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Common Data Environment (CDE)</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">BIM Viewer</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Baustellendokumentation</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Planserver</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">IFC Viewer</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Interview mit öffentlichem Bauherren</a>
-        <div class="py-2 mt-2 text-white font-semibold">Über uns</div>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Unsere Philosophie</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Pressemitteilung Orca Group</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Karriere</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Kooperationen</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Mitgliedschaften</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">20 Jahre NetzWerkPlan</a>
-        <div class="py-2 mt-2 text-white font-semibold">Kunden</div>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Unsere Kunden</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Kundenstimmen</a>
-        <div class="py-2 mt-2 text-white font-semibold">Service</div>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Schnelleinstieg</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Schulungsvideos</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">AGB</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Datenschutz</a>
-        <a href="#" class="py-1.5 pl-4 text-white/70 text-[13px]">Impressum</a>
-        <div class="py-2 mt-2 text-white font-semibold">Kontakt</div>
-        <button data-open-modal="demoModal" class="w-full text-left py-1.5 pl-4 text-white/70 text-[13px] hover:text-white">Live-Demo / Präsentation</button>
-        <button data-open-modal="offerModal" class="w-full text-left py-1.5 pl-4 text-white/70 text-[13px] hover:text-white">Individuelles Angebot</button>
-        <a href="#cta" class="py-1.5 pl-4 text-white/70 text-[13px]">Allgemeines Kontaktformular</a>
-        <a href="#cta" class="py-1.5 pl-4 text-white/70 text-[13px]">Supportformular</a>
-      </div>
-      <div class="grid grid-cols-2 gap-2 mt-4">
-        <a href="#cta" class="px-4 py-2.5 rounded-lg border border-white/40 text-white text-sm font-semibold text-center">Angebot</a>
-        <a href="#cta" class="px-4 py-2.5 rounded-lg bg-brand-gold-500 text-brand-blue-900 text-sm font-bold text-center">Live-Demo</a>
+    <!-- Mobile menu — accordion -->
+    <div id="mobMenu" class="lg:hidden hidden border-t border-white/10" style="max-height:calc(100vh - 64px);overflow-y:auto;-webkit-overflow-scrolling:touch;">
+      <div class="px-4 py-3 space-y-0.5">
+
+        <!-- Lösungen -->
+        <div class="mob-section">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-loesungen">
+            Lösungen
+            <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div id="mob-loesungen" class="mob-items hidden pl-2 pb-2 space-y-0.5">
+            <a href="#solutions" class="mob-link">Projektraum winplan 2.0</a>
+            <a href="#solutions" class="mob-link">winplan 2.0 App</a>
+            <a href="#solutions" class="mob-link">BIM-CDE bimplan</a>
+            <a href="#solutions" class="mob-link">BIM-CDE wpsquirrel</a>
+            <a href="#solutions" class="mob-link">Bautagebuch</a>
+            <a href="#solutions" class="mob-link">Protokollmanagement</a>
+            <a href="#solutions" class="mob-link">Mängelmanagement</a>
+            <a href="#solutions" class="mob-link">2D-Viewer</a>
+            <a href="#solutions" class="mob-link">Sicherheit</a>
+            <a href="#solutions" class="mob-link">QR-Code</a>
+          </div>
+        </div>
+        <div class="h-px bg-white/8"></div>
+
+        <!-- Use Cases -->
+        <div class="mob-section">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-usecases">
+            Use Cases
+            <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div id="mob-usecases" class="mob-items hidden pl-2 pb-2 space-y-0.5">
+            <a href="#solutions" class="mob-link">Projektraum Bau</a>
+            <a href="#solutions" class="mob-link">Common Data Environment (CDE)</a>
+            <a href="#solutions" class="mob-link">BIM Viewer</a>
+            <a href="#solutions" class="mob-link">Baustellendokumentation</a>
+            <a href="#solutions" class="mob-link">Planserver</a>
+            <a href="#solutions" class="mob-link">IFC Viewer</a>
+          </div>
+        </div>
+        <div class="h-px bg-white/8"></div>
+
+        <!-- Über uns -->
+        <div class="mob-section">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-ueber">
+            Über uns
+            <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div id="mob-ueber" class="mob-items hidden pl-2 pb-2 space-y-0.5">
+            <a href="#trust" class="mob-link">Unsere Philosophie</a>
+            <a href="#trust" class="mob-link">Karriere</a>
+            <a href="#trust" class="mob-link">Kooperationen</a>
+            <a href="#trust" class="mob-link">20 Jahre NetzWerkPlan</a>
+          </div>
+        </div>
+        <div class="h-px bg-white/8"></div>
+
+        <!-- Kunden -->
+        <div class="mob-section">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-kunden">
+            Kunden
+            <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div id="mob-kunden" class="mob-items hidden pl-2 pb-2 space-y-0.5">
+            <a href="#testi" class="mob-link">Kundenstimmen</a>
+            <a href="#testi" class="mob-link">Unsere Kunden</a>
+          </div>
+        </div>
+        <div class="h-px bg-white/8"></div>
+
+        <!-- Service -->
+        <div class="mob-section">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-service">
+            Service
+            <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div id="mob-service" class="mob-items hidden pl-2 pb-2 space-y-0.5">
+            <a href="#" class="mob-link">Schnelleinstieg</a>
+            <a href="#" class="mob-link">Schulungsvideos</a>
+            <a href="#" class="mob-link">AGB</a>
+            <a href="#" class="mob-link">Datenschutz</a>
+            <a href="#" class="mob-link">Impressum</a>
+          </div>
+        </div>
+        <div class="h-px bg-white/8"></div>
+
+        <!-- Kontakt -->
+        <div class="mob-section">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] touch-manipulation" data-target="mob-kontakt">
+            Kontakt
+            <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div id="mob-kontakt" class="mob-items hidden pl-2 pb-2 space-y-0.5">
+            <button data-open-modal="demoModal" class="mob-link w-full text-left touch-manipulation">Live-Demo / Präsentation</button>
+            <button data-open-modal="offerModal" class="mob-link w-full text-left touch-manipulation">Individuelles Angebot</button>
+            <a href="#cta" class="mob-link">Kontaktformular</a>
+          </div>
+        </div>
+
+        <!-- CTA buttons -->
+        <div class="grid grid-cols-2 gap-2 pt-4 pb-2">
+          <button data-open-modal="offerModal" class="px-4 py-3 rounded-xl border border-white/40 text-white text-sm font-semibold text-center touch-manipulation">Angebot</button>
+          <button data-open-modal="demoModal" class="px-4 py-3 rounded-xl bg-brand-gold-500 text-brand-blue-900 text-sm font-bold text-center touch-manipulation">Live-Demo</button>
+        </div>
+
       </div>
     </div>
   </div>
 </header>
+
+<style>
+  .mob-link { display:block; padding:8px 12px; border-radius:8px; color:rgba(255,255,255,.7); font-size:13px; transition:background .15s ease, color .15s ease; touch-action:manipulation; }
+  .mob-link:hover, .mob-link:active { background:rgba(255,255,255,.08); color:#fff; }
+  .mob-sec-btn:active { background:rgba(255,255,255,.05); border-radius:8px; }
+</style>
 
 <!-- ================= SECTION 2: HERO (light theme) ================= -->
 <section id="hero" class="hero relative overflow-hidden bg-white text-slate-900" data-screen-label="Hero">
@@ -1764,15 +1829,59 @@
 })();
 
 /* ============ Mobile menu ============ */
-document.getElementById('mobBurger').addEventListener('click', () => {
-  document.getElementById('mobMenu').classList.toggle('hidden');
-});
-// Close mobile menu when any link/button inside it is tapped
-document.getElementById('mobMenu').addEventListener('click', (e) => {
-  if (e.target.tagName === 'A' || e.target.closest('[data-open-modal]')) {
-    document.getElementById('mobMenu').classList.add('hidden');
+(function() {
+  var burger  = document.getElementById('mobBurger');
+  var menu    = document.getElementById('mobMenu');
+  var iconHam = document.getElementById('burgerIcon');
+  var iconX   = document.getElementById('burgerClose');
+
+  function closeMenu() {
+    menu.classList.add('hidden');
+    iconHam.classList.remove('hidden');
+    iconX.classList.add('hidden');
+    burger.setAttribute('aria-expanded', 'false');
+    // collapse all accordion sections
+    document.querySelectorAll('.mob-items').forEach(function(el) { el.classList.add('hidden'); });
+    document.querySelectorAll('.mob-chevron').forEach(function(el) { el.style.transform = ''; });
   }
-});
+
+  burger.addEventListener('click', function() {
+    var isOpen = !menu.classList.contains('hidden');
+    if (isOpen) {
+      closeMenu();
+    } else {
+      menu.classList.remove('hidden');
+      iconHam.classList.add('hidden');
+      iconX.classList.remove('hidden');
+      burger.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  // Accordion sections
+  document.querySelectorAll('.mob-sec-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var targetId = btn.dataset.target;
+      var items    = document.getElementById(targetId);
+      var chevron  = btn.querySelector('.mob-chevron');
+      var isOpen   = !items.classList.contains('hidden');
+      // close all
+      document.querySelectorAll('.mob-items').forEach(function(el) { el.classList.add('hidden'); });
+      document.querySelectorAll('.mob-chevron').forEach(function(el) { el.style.transform = ''; });
+      // open this one if it was closed
+      if (!isOpen) {
+        items.classList.remove('hidden');
+        chevron.style.transform = 'rotate(180deg)';
+      }
+    }, { passive: true });
+  });
+
+  // Close when tapping a link or modal trigger inside menu
+  menu.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A' || e.target.closest('[data-open-modal]')) {
+      closeMenu();
+    }
+  });
+})();
 
 /* ============ Reveal on scroll ============ */
 (() => {
