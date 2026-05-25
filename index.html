@@ -603,6 +603,49 @@
     #aboutSlider .dot span { width: 32px; height: 3px; }
   }
 
+  /* ── Testi: mobile swipe carousel ── */
+  @media (max-width: 767px) {
+    /* Break out of section px-5 padding for full-width scroll */
+    #testi .relative.group.py-4 { margin-left: -20px; margin-right: -20px; }
+    /* Hide left/right fade overlays — conflict with swipe UX */
+    #testi .absolute.left-0.top-0, #testi .absolute.right-0.top-0 { display: none; }
+
+    /* Scroll container: enable native swipe */
+    #testiScrollWrap {
+      overflow-x: auto;
+      overflow-y: hidden;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      scroll-padding-left: 16px;
+    }
+    #testiScrollWrap::-webkit-scrollbar { display: none; }
+
+    /* Stop marquee animation, flatten to horizontal row */
+    #testiScrollWrap .animate-marquee {
+      animation: none !important;
+      transform: none !important;
+      padding: 12px 16px 20px !important;
+      gap: 0 !important;
+    }
+
+    /* Inner track gap override */
+    #testiScrollWrap .flex.items-stretch { gap: 12px !important; }
+
+    /* Hide duplicate track (only for seamless marquee loop) */
+    #testiScrollWrap [aria-hidden="true"] { display: none !important; }
+
+    /* Cards: smaller, snap to start */
+    #testiScrollWrap .testi-card-new {
+      width: 80vw !important;
+      max-width: 300px !important;
+      scroll-snap-align: start;
+      flex-shrink: 0 !important;
+      /* Disable hover scale on touch — snap handles UX */
+      transition: border-color .25s ease, box-shadow .25s ease !important;
+    }
+  }
+
   /* Testi Card Shine Effect */
   .testi-card-new::before {
     content: '';
@@ -1541,7 +1584,7 @@
       <div class="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-[#F6F9FC] via-[#F6F9FC]/80 to-transparent z-20 pointer-events-none"></div>
 
       <!-- Testimonial Marquee Track -->
-      <div class="flex overflow-x-hidden">
+      <div id="testiScrollWrap" class="flex overflow-x-hidden">
         <div class="flex animate-marquee whitespace-nowrap items-stretch gap-8 px-4 py-12 group-hover:[animation-play-state:paused]">
           
           <!-- Track 1 -->
