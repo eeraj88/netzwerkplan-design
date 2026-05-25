@@ -490,7 +490,7 @@
   .eco-tab-scroll { -ms-overflow-style: none; scrollbar-width: none; }
   @media (max-width: 1023px) {
     /* Tabs: 3×2 grid */
-    .eco-tab-scroll { overflow: visible !important; }
+    .eco-tab-scroll { overflow: visible !important; position: relative; z-index: 30; }
     .eco-tab-scroll > [role="tablist"] {
       display: grid !important;
       grid-template-columns: repeat(3, 1fr) !important;
@@ -510,6 +510,8 @@
       border-radius: 10px !important;
       background: rgba(255,255,255,.05) !important;
       gap: 5px !important;
+      position: relative;
+      z-index: 40;
     }
     .eco-tab[data-active="true"] {
       background: rgba(255,255,255,.13) !important;
@@ -762,15 +764,15 @@
 
       <!-- CTAs -->
       <div class="flex items-center gap-2.5">
-        <a href="#cta" class="px-4 py-2 rounded-lg border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition">Angebot erhalten</a>
-        <a href="#cta" class="btn-shine px-4 py-2 rounded-lg bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-blue-900 text-sm font-bold shadow-gold transition">
+        <button data-open-modal="offerModal" type="button" class="px-4 py-2 rounded-lg border border-white/40 text-white text-sm font-semibold hover:bg-white/10 transition cursor-pointer">Angebot erhalten</button>
+        <button data-open-modal="demoModal" type="button" class="btn-shine px-4 py-2 rounded-lg bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-blue-900 text-sm font-bold shadow-gold transition cursor-pointer">
           Jetzt Live-Demo sichern
-        </a>
+        </button>
       </div>
       </div><!-- end ml-auto wrapper -->
 
       <!-- Mobile burger — ml-auto pushes it to far right -->
-      <button id="mobBurger" class="ml-auto lg:hidden w-10 h-10 grid place-items-center rounded-lg hover:bg-white/10 style="touch-action: manipulation" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobMenu">
+      <button id="mobBurger" class="ml-auto lg:hidden w-10 h-10 grid place-items-center rounded-lg hover:bg-white/10" style="touch-action: manipulation" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobMenu">
         <svg id="burgerIcon" class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         <svg id="burgerClose" class="w-6 h-6 hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
@@ -782,7 +784,7 @@
 
         <!-- Lösungen -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation" data-target="mob-loesungen">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px]" style="touch-action: manipulation" data-target="mob-loesungen">
             Lösungen
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -803,7 +805,7 @@
 
         <!-- Use Cases -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation" data-target="mob-usecases">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px]" style="touch-action: manipulation" data-target="mob-usecases">
             Use Cases
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -820,7 +822,7 @@
 
         <!-- Über uns -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation" data-target="mob-ueber">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px]" style="touch-action: manipulation" data-target="mob-ueber">
             Über uns
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -835,7 +837,7 @@
 
         <!-- Kunden -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation" data-target="mob-kunden">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px]" style="touch-action: manipulation" data-target="mob-kunden">
             Kunden
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -848,7 +850,7 @@
 
         <!-- Service -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation" data-target="mob-service">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px]" style="touch-action: manipulation" data-target="mob-service">
             Service
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
@@ -864,21 +866,21 @@
 
         <!-- Kontakt -->
         <div class="mob-section">
-          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px] style="touch-action: manipulation" data-target="mob-kontakt">
+          <button class="mob-sec-btn w-full flex items-center justify-between py-3 text-white font-semibold text-[14px]" style="touch-action: manipulation" data-target="mob-kontakt">
             Kontakt
             <svg class="mob-chevron w-4 h-4 text-white/50 transition-transform duration-200" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></svg>
           </button>
           <div id="mob-kontakt" class="mob-items hidden pl-2 pb-2 space-y-0.5">
-            <button data-open-modal="demoModal" class="mob-link w-full text-left style="touch-action: manipulation">Live-Demo / Präsentation</button>
-            <button data-open-modal="offerModal" class="mob-link w-full text-left style="touch-action: manipulation">Individuelles Angebot</button>
+            <button data-open-modal="demoModal" class="mob-link w-full text-left" style="touch-action: manipulation">Live-Demo / Präsentation</button>
+            <button data-open-modal="offerModal" class="mob-link w-full text-left" style="touch-action: manipulation">Individuelles Angebot</button>
             <a href="#cta" class="mob-link">Kontaktformular</a>
           </div>
         </div>
 
         <!-- CTA buttons -->
         <div class="grid grid-cols-2 gap-2 pt-4 pb-2">
-          <button data-open-modal="offerModal" class="px-4 py-3 rounded-xl border border-white/40 text-white text-sm font-semibold text-center style="touch-action: manipulation">Angebot</button>
-          <button data-open-modal="demoModal" class="px-4 py-3 rounded-xl bg-brand-gold-500 text-brand-blue-900 text-sm font-bold text-center style="touch-action: manipulation">Live-Demo</button>
+          <button data-open-modal="offerModal" class="px-4 py-3 rounded-xl border border-white/40 text-white text-sm font-semibold text-center" style="touch-action: manipulation">Angebot</button>
+          <button data-open-modal="demoModal" class="px-4 py-3 rounded-xl bg-brand-gold-500 text-brand-blue-900 text-sm font-bold text-center" style="touch-action: manipulation">Live-Demo</button>
         </div>
 
       </div>
@@ -922,9 +924,7 @@
   <div class="absolute -bottom-40 right-1/3 w-[500px] h-[500px] rounded-full pointer-events-none opacity-50" style="background: radial-gradient(closest-side, rgba(217, 181, 0, .12), transparent 70%); filter: blur(20px);"></div>
 
   <!-- VIDEO (right side, masked left-fade into white) -->
-  <video class="hero-video" autoplay muted loop playsinline preload="auto">
-    <source src="assets/hero-bg3.mp4" type="video/mp4" />
-  </video>
+  <video class="hero-video" src="assets/hero-bg3.mp4" autoplay muted loop playsinline preload="auto"></video>
 
   <div id="heroContent" class="relative z-10 max-w-7xl mx-auto px-5 lg:px-8 pt-16 lg:pt-28 pb-20 lg:pb-32">
 
@@ -959,17 +959,17 @@
 
     <!-- CTAs -->
     <div class="reveal mt-9 flex flex-col sm:flex-row gap-3">
-      <a href="#cta" class="btn-shine inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-blue-900 font-bold shadow-gold transition">
+      <button data-open-modal="demoModal" class="btn-shine inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-blue-900 font-bold shadow-gold transition">
         Kostenlose Live-Demo sichern
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
-      </a>
-      <a href="https://youtu.be/TNVPgzRE0es" target="_blank" rel="noopener" class="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-[#FF0000] hover:bg-[#cc0000] text-white font-semibold shadow-lg shadow-red-500/20 hover:shadow-red-500/30 transition">
+      </button>
+      <button data-open-modal="videoModal" class="inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-[#FF0000] hover:bg-[#cc0000] text-white font-semibold shadow-lg shadow-red-500/20 hover:shadow-red-500/30 transition">
         <svg class="w-5 h-5" viewBox="0 0 24 24" aria-hidden="true">
           <path fill="white" d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814z"/>
           <path fill="#FF0000" d="m9.545 15.568 6.272-3.568-6.272-3.568z"/>
         </svg>
         3-Minuten Einblick ansehen
-      </a>
+      </button>
     </div>
 
     <!-- Trust stats — 3 circular cards -->
@@ -1726,7 +1726,7 @@
           <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Q&A mit einem Senior Consultant</li>
           <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-gold-600 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Test-Zugang im Anschluss möglich</li>
         </ul>
-        <button data-open-modal="demoModal" class="btn-shine mt-auto pt-8">
+        <button data-open-modal="demoModal" type="button" class="btn-shine w-full mt-8 cursor-pointer focus:outline-none">
           <span class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-gold-500 hover:bg-brand-gold-400 text-brand-blue-900 font-bold shadow-gold transition">
             Jetzt Live-Demo anfragen
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -1749,7 +1749,7 @@
           <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-blue-700 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Modular preisstrukturiert</li>
           <li class="flex items-start gap-2.5"><svg class="w-4 h-4 mt-1 text-brand-blue-700 flex-none" fill="currentColor" viewBox="0 0 20 20"><path d="M16.7 5.3a1 1 0 010 1.4l-7 7a1 1 0 01-1.4 0l-4-4a1 1 0 011.4-1.4l3.3 3.3 6.3-6.3a1 1 0 011.4 0z"/></svg>Inkl. Onboarding & Schulung</li>
         </ul>
-        <button data-open-modal="offerModal" class="mt-auto pt-8">
+        <button data-open-modal="offerModal" type="button" class="w-full mt-8 cursor-pointer focus:outline-none">
           <span class="w-full inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-brand-blue-700 hover:bg-brand-blue-800 text-white font-bold shadow-navy transition">
             Angebot anfordern
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
@@ -2026,20 +2026,13 @@ document.addEventListener('touchstart', function(){}, {passive: true});
     }
   };
 
-  document.querySelectorAll('[data-open-modal]').forEach(btn => {
-    // iOS: use touchend with proper handling (no preventDefault, stopPropagation instead)
-    const handleOpen = (e) => {
-      if (e.type === 'touchend') {
-        e.stopPropagation();
-        // Small delay to avoid double-trigger with click
-        setTimeout(() => openModal(btn.dataset.openModal), 50);
-      } else {
-        openModal(btn.dataset.openModal);
-      }
-    };
-    btn.addEventListener('click', handleOpen);
-    btn.addEventListener('touchend', handleOpen, { passive: true });
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-open-modal]');
+    if (!btn) return;
+    e.preventDefault();
+    openModal(btn.dataset.openModal);
   });
+
   // Close: use event delegation so it works regardless of element nesting/timing
   document.addEventListener('click', (e) => {
     const closeEl = e.target.closest('[data-close-modal]');
@@ -2052,6 +2045,17 @@ document.addEventListener('touchstart', function(){}, {passive: true});
     if (e.key !== 'Escape') return;
     document.querySelectorAll('.modal.open').forEach(closeModal);
   });
+
+  // iOS: Ensure background videos play after first touch
+  const unlockVideos = () => {
+    document.querySelectorAll('video[autoplay]').forEach(v => {
+      if (v.paused) v.play().catch(() => {});
+    });
+    document.removeEventListener('touchstart', unlockVideos);
+    document.removeEventListener('click', unlockVideos);
+  };
+  document.addEventListener('touchstart', unlockVideos, { passive: true });
+  document.addEventListener('click', unlockVideos, { once: true });
 
   // -------- Step navigation within a modal --------
   function showStep(modal, stepKey) {
@@ -2130,13 +2134,9 @@ document.addEventListener('touchstart', function(){}, {passive: true});
       }
     });
   }
-  tabs.forEach(t => {
-    const handleTab = (e) => {
-      if (e.type === 'touchend') e.stopPropagation();
-      show(t.dataset.tab);
-    };
-    t.addEventListener('click', handleTab);
-    t.addEventListener('touchend', handleTab, { passive: true });
+  root.addEventListener('click', (e) => {
+    const t = e.target.closest('.eco-tab');
+    if (t) show(t.dataset.tab);
   });
   show('cde-bim');
 })();
