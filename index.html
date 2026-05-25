@@ -51,6 +51,15 @@
           'grid-slate': 'linear-gradient(rgba(15,23,42,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,.06) 1px, transparent 1px)',
           'grid-dark':  'linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px)',
         },
+        animation: {
+          marquee: 'marquee 60s linear infinite',
+        },
+        keyframes: {
+          marquee: {
+            '0%': { transform: 'translateX(0)' },
+            '100%': { transform: 'translateX(-50%)' },
+          }
+        }
       },
     },
   };
@@ -588,6 +597,29 @@
     #aboutSlider .slideNav { display: none !important; }
     #aboutSlider .dot { touch-action: manipulation; }
     #aboutSlider .dot span { width: 32px; height: 3px; }
+  }
+
+  /* Testi Card Shine Effect */
+  .testi-card-new::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(
+      120deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.4) 50%,
+      transparent 80%
+    );
+    background-size: 250% 100%;
+    background-position: -150% 0;
+    background-repeat: no-repeat;
+    transition: background-position 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 30;
+    pointer-events: none;
+  }
+  .testi-card-new:hover::before {
+    background-position: 150% 0;
   }
 </style>
 </head>
@@ -1499,181 +1531,159 @@
       <p class="mt-5 text-lg text-slate-600">Über 500 Unternehmen vertrauen täglich auf winplan.</p>
     </div>
 
-    <!-- Marquee Container -->
-    <div class="relative">
-      <!-- Gradient overlays -->
-      <div class="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#F6F9FC] to-transparent z-10 pointer-events-none"></div>
-      <div class="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#F6F9FC] to-transparent z-10 pointer-events-none"></div>
+    <!-- New Marquee Container -->
+    <div class="relative group py-4">
+      <!-- Left Fade -->
+      <div class="absolute left-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-r from-[#F6F9FC] via-[#F6F9FC]/80 to-transparent z-20 pointer-events-none"></div>
+      <!-- Right Fade -->
+      <div class="absolute right-0 top-0 bottom-0 w-24 md:w-40 bg-gradient-to-l from-[#F6F9FC] via-[#F6F9FC]/80 to-transparent z-20 pointer-events-none"></div>
 
-      <!-- Marquee Track -->
-      <div class="overflow-hidden">
-        <div class="marquee-track-testi flex items-center gap-6 py-8" style="width:max-content;animation: marquee-testi 60s linear infinite;">
-          <!-- Original Cards -->
-          <div class="testi-card relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„winplan ist für uns als Bauträger eine große Hilfe, da alle Planer Zugriff haben und jeder auf dem aktuellsten Stand der Grundrisse, Pläne und Protokolle ist."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/hsp7-dark.svg" class="h-7" alt="HSP7">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Anna Lupinski</div>
-                <div class="text-[11px] text-slate-500">HSP7 Real Estate GmbH</div>
+      <!-- Testimonial Marquee Track -->
+      <div class="flex overflow-x-hidden">
+        <div class="flex animate-marquee whitespace-nowrap items-stretch gap-8 px-4 py-12 group-hover:[animation-play-state:paused]">
+          
+          <!-- Track 1 -->
+          <div class="flex items-stretch gap-8">
+            <!-- Card 1: Anna Lupinski (HSP7) -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„winplan ist für uns als Bauträger eine große Hilfe, da alle Planer Zugriff haben und jeder auf dem aktuellsten Stand der Grundrisse, Pläne und Protokolle ist."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <img src="assets/logos/hsp7-dark.svg" class="h-7" alt="HSP7"><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Anna Lupinski</div><div class="text-[10px] text-slate-500 font-medium italic">HSP7 Real Estate GmbH</div></div>
+              </div>
+            </div>
+
+            <!-- Card 2: Norbert Uhlir -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Ohne das Programm winplan wäre unser Alltag im Büro nicht mehr vorstellbar und viel komplizierter."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <div class="w-9 h-9 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-xs">NU</div><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Dipl.-Ing. Norbert Uhlir</div><div class="text-[10px] text-slate-500 font-medium italic">Ingenieurbüro Uhlir & Jansen</div></div>
+              </div>
+            </div>
+
+            <!-- Card 3: Südhausbau -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„In winplan finde ich unsere eigenen Pläne und Dokumente schneller als auf dem heimischen Server."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <img src="assets/logos/suedhausbau.svg" class="h-7" alt="Südhausbau"><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Beteiligter</div><div class="text-[10px] text-slate-500 font-medium italic">Ottmann GmbH & Co. Südhausbau KG</div></div>
+              </div>
+            </div>
+
+            <!-- Card 4: BRK -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Vielen Dank für den guten Support und die hervorragende Zusammenarbeit. Das Portal hat uns viel Zeit und Arbeit gespart."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <img src="assets/logos/brk.svg" class="h-7" alt="BRK"><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Franz Fischer</div><div class="text-[10px] text-slate-500 font-medium italic">BRK Altötting</div></div>
+              </div>
+            </div>
+
+            <!-- Card 5: Stadtwerke -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Die Anwendung unterstützt uns in unserem Top-Projekt zum Neubau eines Trinkwasserspeichers. Der Support durch NetzWerkPlan ist stets vorbildlich."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <img src="assets/logos/stadtwerke.svg" class="h-7" alt="Stadtwerke Düsseldorf"><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Stefan Kamphausen</div><div class="text-[10px] text-slate-500 font-medium italic">Stadtwerke Düsseldorf AG</div></div>
+              </div>
+            </div>
+
+            <!-- Card 6: Schuster -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Wir nutzen winplan seit Jahrzehnten. Die Software hat uns maßgeblich in der Struktur und Nachvollziehbarkeit des Planversandes unterstützt."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <div class="w-9 h-9 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-xs">HB</div><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Hans-Peter Böck</div><div class="text-[10px] text-slate-500 font-medium italic">Schuster engineering GmbH</div></div>
+              </div>
+            </div>
+
+            <!-- Card 7: CUBIC -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Eine absolut intelligente, komplexe und dennoch einfach zu handhabende Lösung. Die automatisierten Workflows machen die Freigabe wesentlich übersichtlicher."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <div class="w-9 h-9 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-xs">RL</div><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Raphael Lieser</div><div class="text-[10px] text-slate-500 font-medium italic">CUBIC S.à r.l</div></div>
               </div>
             </div>
           </div>
 
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Ohne das Programm winplan wäre unser Alltag im Büro nicht mehr vorstellbar und viel komplizierter."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/planbau.png" class="h-7" alt="PlanBau">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Dipl.-Ing. Norbert Uhlir</div>
-                <div class="text-[11px] text-slate-500">Ingenieurbüro Uhlir & Jansen</div>
+          <!-- Track 2 (Duplicate for loop) -->
+          <div class="flex items-stretch gap-8" aria-hidden="true">
+            <!-- Card 1: Anna Lupinski (HSP7) -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„winplan ist für uns als Bauträger eine große Hilfe, da alle Planer Zugriff haben und jeder auf dem aktuellsten Stand der Grundrisse, Pläne und Protokolle ist."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <img src="assets/logos/hsp7-dark.svg" class="h-7" alt="HSP7"><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Anna Lupinski</div><div class="text-[10px] text-slate-500 font-medium italic">HSP7 Real Estate GmbH</div></div>
               </div>
             </div>
-          </div>
 
-          <div class="testi-card relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„In winplan finde ich unsere eigenen Pläne und Dokumente schneller als auf dem heimischen Server."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/suedhausbau.svg" class="h-7" alt="Südhausbau">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Beteiligter</div>
-                <div class="text-[11px] text-slate-500">Ottmann GmbH & Co. Südhausbau KG</div>
+            <!-- Card 2: Norbert Uhlir -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Ohne das Programm winplan wäre unser Alltag im Büro nicht mehr vorstellbar und viel komplizierter."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <div class="w-9 h-9 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-xs">NU</div><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Dipl.-Ing. Norbert Uhlir</div><div class="text-[10px] text-slate-500 font-medium italic">Ingenieurbüro Uhlir & Jansen</div></div>
               </div>
             </div>
-          </div>
 
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Vielen Dank für den guten Support und die hervorragende Zusammenarbeit. Das Portal hat uns viel Zeit und Arbeit gespart."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/brk.svg" class="h-7" alt="BRK">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Franz Fischer</div>
-                <div class="text-[11px] text-slate-500">BRK Altötting</div>
+            <!-- Card 3: Südhausbau -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„In winplan finde ich unsere eigenen Pläne und Dokumente schneller als auf dem heimischen Server."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <img src="assets/logos/suedhausbau.svg" class="h-7" alt="Südhausbau"><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Beteiligter</div><div class="text-[10px] text-slate-500 font-medium italic">Ottmann GmbH & Co. Südhausbau KG</div></div>
               </div>
             </div>
-          </div>
 
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Die Anwendung unterstützt uns in unserem Top-Projekt zum Neubau eines Trinkwasserspeichers. Der Support durch NetzWerkPlan ist stets vorbildlich."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/stadtwerke.svg" class="h-7" alt="Stadtwerke Düsseldorf">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Stefan Kamphausen</div>
-                <div class="text-[11px] text-slate-500">Stadtwerke Düsseldorf AG</div>
+            <!-- Card 4: BRK -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Vielen Dank für den guten Support und die hervorragende Zusammenarbeit. Das Portal hat uns viel Zeit und Arbeit gespart."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <img src="assets/logos/brk.svg" class="h-7" alt="BRK"><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Franz Fischer</div><div class="text-[10px] text-slate-500 font-medium italic">BRK Altötting</div></div>
               </div>
             </div>
-          </div>
 
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Wir nutzen winplan seit Jahrzehnten. Die Software hat uns maßgeblich in der Struktur und Nachvollziehbarkeit des Planversandes unterstützt – egal wie umfangreich das Projekt."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <div class="w-8 h-8 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-xs">HB</div>
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Hans-Peter Böck</div>
-                <div class="text-[11px] text-slate-500">Schuster engineering GmbH</div>
+            <!-- Card 5: Stadtwerke -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Die Anwendung unterstützt uns in unserem Top-Projekt zum Neubau eines Trinkwasserspeichers. Der Support durch NetzWerkPlan ist stets vorbildlich."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <img src="assets/logos/stadtwerke.svg" class="h-7" alt="Stadtwerke Düsseldorf"><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Stefan Kamphausen</div><div class="text-[10px] text-slate-500 font-medium italic">Stadtwerke Düsseldorf AG</div></div>
               </div>
             </div>
-          </div>
 
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Eine absolut intelligente, komplexe und dennoch einfach zu handhabende Lösung. Die automatisierten Workflows machen die Freigabe wesentlich übersichtlicher."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <div class="w-10 h-10 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-sm">RL</div>
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Raphael Lieser</div>
-                <div class="text-[11px] text-slate-500">CUBIC S.à r.l</div>
+            <!-- Card 6: Schuster -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Wir nutzen winplan seit Jahrzehnten. Die Software hat uns maßgeblich in der Struktur und Nachvollziehbarkeit des Planversandes unterstützt."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <div class="w-9 h-9 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-xs">HB</div><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Hans-Peter Böck</div><div class="text-[10px] text-slate-500 font-medium italic">Schuster engineering GmbH</div></div>
               </div>
             </div>
-          </div>
 
-          <!-- Duplicate for seamless loop -->
-          <div class="testi-card relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„winplan ist für uns als Bauträger eine große Hilfe, da alle Planer Zugriff haben und jeder auf dem aktuellsten Stand der Grundrisse, Pläne und Protokolle ist."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/hsp7-dark.svg" class="h-7" alt="HSP7">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Anna Lupinski</div>
-                <div class="text-[11px] text-slate-500">HSP7 Real Estate GmbH</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Ohne das Programm winplan wäre unser Alltag im Büro nicht mehr vorstellbar und viel komplizierter."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/planbau.png" class="h-7" alt="PlanBau">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Dipl.-Ing. Norbert Uhlir</div>
-                <div class="text-[11px] text-slate-500">Ingenieurbüro Uhlir & Jansen</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="testi-card relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„In winplan finde ich unsere eigenen Pläne und Dokumente schneller als auf dem heimischen Server."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/suedhausbau.svg" class="h-7" alt="Südhausbau">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Beteiligter</div>
-                <div class="text-[11px] text-slate-500">Ottmann GmbH & Co. Südhausbau KG</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Vielen Dank für den guten Support und die hervorragende Zusammenarbeit. Das Portal hat uns viel Zeit und Arbeit gespart."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/brk.svg" class="h-7" alt="BRK">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Franz Fischer</div>
-                <div class="text-[11px] text-slate-500">BRK Altötting</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Die Anwendung unterstützt uns in unserem Top-Projekt zum Neubau eines Trinkwasserspeichers. Der Support durch NetzWerkPlan ist stets vorbildlich."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <img src="assets/logos/stadtwerke.svg" class="h-7" alt="Stadtwerke Düsseldorf">
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Stefan Kamphausen</div>
-                <div class="text-[11px] text-slate-500">Stadtwerke Düsseldorf AG</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Wir nutzen winplan seit Jahrzehnten. Die Software hat uns maßgeblich in der Struktur und Nachvollziehbarkeit des Planversandes unterstützt – egal wie umfangreich das Projekt."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <div class="w-8 h-8 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-xs">HB</div>
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Hans-Peter Böck</div>
-                <div class="text-[11px] text-slate-500">Schuster engineering GmbH</div>
-              </div>
-            </div>
-          </div>
-
-          <div class="testi-card flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-5 shadow-sm">
-            <svg class="absolute -top-12 -left-2 w-20 h-16" viewBox="0 0 30 24" fill="#3766C5"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
-            <p class="text-slate-700 text-[14px] leading-relaxed mb-3 mt-2">„Eine absolut intelligente, komplexe und dennoch einfach zu handhabende Lösung. Die automatisierten Workflows machen die Freigabe wesentlich übersichtlicher."</p>
-            <div class="flex items-center gap-2 pt-2 border-t border-brand-blue-100">
-              <div class="w-10 h-10 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-sm">RL</div>
-              <div class="text-right">
-                <div class="font-semibold text-brand-blue-900 text-xs">Raphael Lieser</div>
-                <div class="text-[11px] text-slate-500">CUBIC S.à r.l</div>
+            <!-- Card 7: CUBIC -->
+            <div class="testi-card-new group relative flex-shrink-0 w-[320px] bg-white rounded-2xl border-2 border-brand-blue-200 p-6 shadow-sm flex flex-col justify-between transition-all duration-500 hover:border-brand-blue-500 hover:shadow-cardHover hover:scale-105">
+              <div class="relative z-10">
+                <svg class="mb-4 w-10 h-8 text-brand-blue-500" viewBox="0 0 30 24" fill="currentColor"><path d="M7.5 0C3.4 0 0 3.4 0 7.5c0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7L4 19.8C9.4 19.4 13 15.8 13 10.5V7.5C13 3.4 11 0 7.5 0zm15.5 0c-4.1 0-7.5 3.4-7.5 7.5 0 3.9 2.8 6.5 6.5 6.5.5 0 1-.1 1.5-.2-.4 2-2.2 3.5-4.7 3.7l.7 2.3c5.4-.4 9-4 9-9.3V7.5C28.5 3.4 26.5 0 23 0z"/></svg>
+                <p class="text-slate-700 text-[14px] leading-relaxed italic whitespace-normal mb-6">„Eine absolut intelligente, komplexe und dennoch einfach zu handhabende Lösung. Die automatisierten Workflows machen die Freigabe wesentlich übersichtlicher."</p></div>
+              <div class="flex items-center justify-between gap-2 pt-4 border-t border-brand-blue-100">
+                <div class="w-9 h-9 rounded-full bg-brand-blue-700 text-white flex items-center justify-center font-bold text-xs">RL</div><div class="text-right"><div class="font-bold text-brand-blue-900 text-[12px]">Raphael Lieser</div><div class="text-[10px] text-slate-500 font-medium italic">CUBIC S.à r.l</div></div>
               </div>
             </div>
           </div>
